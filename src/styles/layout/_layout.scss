@@ -1,0 +1,10 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1; // Allows the main content to grow and push the footer down
+  padding: 1rem 2rem; // Add some padding around the page content
+}

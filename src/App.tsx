@@ -7,21 +7,22 @@ import RegisterPage from "./pages/RegisterPage";
 import VenuePage from "./pages/VenuePage";
 import ProfilePage from "./pages/ProfilePage";
 import NotFoundPage from "./pages/NotFoundPage";
+import Layout from "./Layout";
 
 function App() {
   return (
-    <>
-      {/* We can add a Layout component here later (e.g., Navbar, Footer) */}
-      <Routes>
-        {/* Define routes */}
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/venue/:id" element={<VenuePage />} />
-        <Route path="/profile" element={<ProfilePage />} />
+    <Routes>
+      {/* Wrap all page routes within the Layout component */}
+      <Route path="/" element={<Layout />}>
+        {/* Child routes rendered by Outlet in Layout */}
+        <Route index element={<HomePage />} /> {/* index route for "/" */}
+        <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
+        <Route path="venue/:id" element={<VenuePage />} />
+        <Route path="profile" element={<ProfilePage />} />
         <Route path="*" element={<NotFoundPage />} /> {/* Catch-all route */}
-      </Routes>
-    </>
+      </Route>
+    </Routes>
   );
 }
 
