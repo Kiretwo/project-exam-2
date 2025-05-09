@@ -1,9 +1,9 @@
 import React from "react";
-import "./Footer.scss"; // We'll create this next
+import styles from "./Footer.module.scss";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="footer">
+    <footer className={styles.footer}>
       <p>&copy; {new Date().getFullYear()} Holidaze. All rights reserved.</p>
     </footer>
   );

@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./Navbar.scss"; // We'll create this next
+import styles from "./Navbar.module.scss";
 
 const Navbar: React.FC = () => {
   return (
-    <nav className="navbar">
-      <div className="navbar-brand">
+    <nav className={styles.navbar}>
+      <div className={styles["navbar-brand"]}>
         <Link to="/">Holidaze</Link>
       </div>
-      <ul className="navbar-links">
+      <ul className={styles["navbar-links"]}>
         <li>
           <Link to="/">Venues</Link>
         </li>

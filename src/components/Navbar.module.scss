@@ -1,13 +1,15 @@
+@use "../styles/utils/variables" as vars;
+
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: #333; // Example background
-  color: white;
+  background-color: vars.$dark-gray; // Example background
+  color: vars.$background-color;
 
   .navbar-brand a {
-    color: white;
+    color: vars.$background-color;
     text-decoration: none;
     font-weight: bold;
     font-size: 1.5rem;
@@ -21,11 +23,11 @@
     padding: 0;
 
     li a {
-      color: white;
+      color: vars.$background-color;
       text-decoration: none;
 
       &:hover {
-        color: #ddd;
+        color: vars.$light-gray;
       }
     }
   }
