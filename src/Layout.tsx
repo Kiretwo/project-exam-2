@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Navbar from "./components/Navbar"; // Corrected path
-import Footer from "./components/Footer"; // Corrected path
+import Navbar from "./components/navbar/Navbar"; // Corrected path
+import Footer from "./components/footer/Footer"; // Corrected path
 
 const Layout: React.FC = () => {
   return (
