@@ -1,0 +1,83 @@
+.registerForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; // Space between form groups and button
+  max-width: 450px; // Slightly wider for potentially more fields if you add them
+  margin: 2rem auto; // Center the form on the page
+  padding: 2rem;
+  border: 1px solid vars.$light-gray; // Use your theme's light gray
+  border-radius: 8px;
+  background-color: vars.$background-color; // Use your theme's background color
+
+  h2 {
+    text-align: center;
+    margin-bottom: 1.5rem; // More space below the title
+    color: vars.$text-color; // Use your theme's text color
+  }
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem; // Space between label and input
+
+  label {
+    font-weight: bold;
+    color: vars.$text-color;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="url"] {
+    // Added url for potential avatar/banner later
+    padding: 0.75rem;
+    border: 1px solid vars.$light-gray; // Use a subtle border color
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: vars.$background-color; // Ensure input background matches form if needed
+    color: vars.$text-color; // Ensure input text color is readable
+
+    &:focus {
+      outline: none;
+      border-color: vars.$primary-color; // Highlight with primary color on focus
+      box-shadow: 0 0 0 2px rgba(vars.$primary-color, 0.2); // Soft glow effect
+    }
+  }
+}
+
+.submitButton {
+  padding: 0.85rem; // Slightly larger padding
+  background-color: vars.$primary-color;
+  color: white; // Assuming primary button text is white
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1rem; // Slightly larger font size
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  margin-top: 0.5rem; // Add some space above the button
+
+  &:hover:not(:disabled) {
+    opacity: 0.85; // Slight fade on hover
+  }
+
+  &:disabled {
+    background-color: vars.$secondary-color; // Use secondary color for disabled state
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+}
+
+.errorMessage {
+  color: vars.$danger-color; // Use your theme's danger color
+  text-align: center;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border: 1px solid vars.$danger-color;
+  border-radius: 4px;
+  background-color: rgba(
+    vars.$danger-color,
+    0.1
+  ); // Light background for the error message
+}

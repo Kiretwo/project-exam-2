@@ -1,0 +1,57 @@
+.promptContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border: 1px solid vars.$light-gray;
+  border-radius: 8px;
+  background-color: vars.$background-color;
+  text-align: center;
+
+  h2 {
+    color: vars.$text-color;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: vars.$secondary-color;
+    line-height: 1.6;
+  }
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.2s ease-in-out;
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    opacity: 0.85;
+  }
+}
+
+.yesButton {
+  background-color: vars.$success-color; // Example variable
+  color: white;
+}
+
+.noButton {
+  background-color: vars.$primary-color; // Example variable
+  color: white;
+}
