@@ -14,8 +14,6 @@ const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
 
   const handleStep1Submit = (data: RegisterStep1Data) => {
-    // Here you could do a preliminary validation or check if email exists, if API supports it
-    // For now, just store data and move to step 2
     console.log("Step 1 Data:", data);
     setStep1Data(data);
     setCurrentStep(2);
@@ -34,7 +32,7 @@ const RegisterPage: React.FC = () => {
       email: step1Data.email,
       password: step1Data.password,
       venueManager: isVenueManager,
-      // avatar: null, // Avatar can be added later or if you want to include it in step 1/2
+      // avatar: null, // Avatar can be added later or maybe include in step 1/2
     };
 
     setLoading(true);
@@ -42,14 +40,21 @@ const RegisterPage: React.FC = () => {
 
     try {
       const response = await registerUser(finalRegistrationData);
-      console.log("Registered user:", response.data); // Assuming response has a data property
+      console.log("Registered user:", response.data);
       alert("Registration successful! Please log in.");
       navigate("/login");
     } catch (err: any) {
       console.error("Registration error:", err);
-      setError(err.message || "Failed to register. Please try again.");
-      // Optionally, if API error is specific to step 1 data, you might want to revert to step 1
-      // setCurrentStep(1);
+      // Check for the specific "Profile already exists" error message
+      if (err.message && err.message.includes("Profile already exists")) {
+        setError(
+          "This email address is already registered. Please use a different email or log in."
+        );
+        setCurrentStep(1); // Go back to step 1
+      } else {
+        setError(err.message || "Failed to register. Please try again.");
+        setCurrentStep(1);
+      }
     } finally {
       setLoading(false);
     }
@@ -60,7 +65,7 @@ const RegisterPage: React.FC = () => {
       {currentStep === 1 && (
         <RegisterForm
           onStep1Submit={handleStep1Submit}
-          loading={loading} // You might want separate loading states if step 1 involves an API call
+          loading={loading}
           error={error}
         />
       )}
@@ -70,7 +75,7 @@ const RegisterPage: React.FC = () => {
           loading={loading}
         />
       )}
-      {/* You could add a button to go back to step 1 if needed */}
+      {/* Add a button to go back to step 1 if needed */}
     </div>
   );
 };

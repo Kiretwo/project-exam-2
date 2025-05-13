@@ -2,17 +2,17 @@
   display: flex;
   flex-direction: column;
   gap: 1rem; // Space between form groups and button
-  max-width: 450px; // Slightly wider for potentially more fields if you add them
+  max-width: 450px;
   margin: 2rem auto; // Center the form on the page
   padding: 2rem;
-  border: 1px solid vars.$light-gray; // Use your theme's light gray
+  border: 1px solid vars.$light-gray;
   border-radius: 8px;
-  background-color: vars.$background-color; // Use your theme's background color
+  background-color: vars.$background-color;
 
   h2 {
     text-align: center;
-    margin-bottom: 1.5rem; // More space below the title
-    color: vars.$text-color; // Use your theme's text color
+    margin-bottom: 1.5rem;
+    color: vars.$text-color;
   }
 }
 
@@ -32,52 +32,61 @@
   input[type="url"] {
     // Added url for potential avatar/banner later
     padding: 0.75rem;
-    border: 1px solid vars.$light-gray; // Use a subtle border color
+    border: 1px solid vars.$light-gray;
     border-radius: 4px;
     font-size: 1rem;
-    background-color: vars.$background-color; // Ensure input background matches form if needed
-    color: vars.$text-color; // Ensure input text color is readable
+    background-color: vars.$background-color;
+    color: vars.$text-color;
 
     &:focus {
       outline: none;
       border-color: vars.$primary-color; // Highlight with primary color on focus
       box-shadow: 0 0 0 2px rgba(vars.$primary-color, 0.2); // Soft glow effect
     }
+
+    &.inputError {
+      // Style for invalid input
+      border-color: vars.$danger-color; // Red border for error
+      background-color: rgba(
+        vars.$danger-color,
+        0.05
+      ); // Optional: very light red background
+
+      &:focus {
+        border-color: vars.$danger-color;
+        box-shadow: 0 0 0 2px rgba(vars.$danger-color, 0.2);
+      }
+    }
+
+    // Optional: Style for valid input
   }
+}
+
+.errorMessageItem {
+  color: vars.$danger-color;
+  font-size: 0.875rem;
+  margin-top: 0.25rem; // Space between input and error message
 }
 
 .submitButton {
-  padding: 0.85rem; // Slightly larger padding
+  padding: 0.85rem;
   background-color: vars.$primary-color;
-  color: white; // Assuming primary button text is white
+  color: white;
   border: none;
   border-radius: 4px;
-  font-size: 1.1rem; // Slightly larger font size
+  font-size: 1.1rem;
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out, opacity 0.2s ease-in-out;
-  margin-top: 0.5rem; // Add some space above the button
+  margin-top: 0.5rem;
 
   &:hover:not(:disabled) {
-    opacity: 0.85; // Slight fade on hover
+    opacity: 0.85;
   }
 
   &:disabled {
-    background-color: vars.$secondary-color; // Use secondary color for disabled state
+    background-color: vars.$secondary-color;
     cursor: not-allowed;
     opacity: 0.7;
   }
-}
-
-.errorMessage {
-  color: vars.$danger-color; // Use your theme's danger color
-  text-align: center;
-  margin-bottom: 1rem;
-  padding: 0.5rem;
-  border: 1px solid vars.$danger-color;
-  border-radius: 4px;
-  background-color: rgba(
-    vars.$danger-color,
-    0.1
-  ); // Light background for the error message
 }
