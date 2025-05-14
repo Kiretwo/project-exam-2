@@ -10,7 +10,7 @@ const Navbar: React.FC = () => {
       </div>
       <ul className={styles["navbar-links"]}>
         <li>
-          <Link to="/">Venues</Link>
+          <Link to="/search">Search</Link>
         </li>
         <li>
           <Link to="/profile">Profile</Link>

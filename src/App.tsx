@@ -4,10 +4,10 @@ import "./App.scss";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
-import VenuePage from "./pages/VenuePage";
 import ProfilePage from "./pages/ProfilePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import Layout from "./Layout";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
         <Route index element={<HomePage />} /> {/* index route for "/" */}
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
-        <Route path="venue/:id" element={<VenuePage />} />
+        <Route path="search" element={<SearchPage />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="*" element={<NotFoundPage />} /> {/* Catch-all route */}
       </Route>
