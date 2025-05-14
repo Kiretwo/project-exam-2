@@ -9,25 +9,25 @@ const Footer: React.FC = () => {
         <ul>
           <li className="active">
             <a href="#">
-              <FaHome className="icon" />
+              <FaHome className={styles.icon} />
               <span className="label">Home</span>
             </a>
           </li>
           <li>
             <a href="#">
-              <FaSearch className="icon" />
+              <FaSearch className={styles.icon} />
               <span className="label">Search</span>
             </a>
           </li>
           <li>
             <a href="#">
-              <FaCalendarAlt className="icon" />
+              <FaCalendarAlt className={styles.icon} />
               <span className="label">Bookings</span>
             </a>
           </li>
           <li>
             <a href="#">
-              <FaUser className="icon" />
+              <FaUser className={styles.icon} />
               <span className="label">Profile</span>
             </a>
           </li>
