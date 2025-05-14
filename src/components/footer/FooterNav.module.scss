@@ -35,10 +35,15 @@
         font-size: 1.4rem;
         margin-bottom: 0.3rem;
       }
+
+      .icon-home {
+        font-size: 1.7rem;
+        margin-bottom: 0.1rem;
+      }
     }
 
-    .active a {
-      color: vars.$primary-color;
+    .home-btn {
+      margin-bottom: 0.3rem;
     }
   }
 }

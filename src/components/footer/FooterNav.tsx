@@ -1,35 +1,36 @@
 import React from "react";
 import { FaHome, FaSearch, FaCalendarAlt, FaUser } from "react-icons/fa";
 import styles from "./FooterNav.module.scss";
+import { Link } from "react-router-dom";
 
 const Footer: React.FC = () => {
   return (
     <footer className={styles["footer-nav"]}>
       <nav>
         <ul>
-          <li className="active">
-            <a href="#">
-              <FaHome className={styles.icon} />
+          <li className={styles["home-btn"]}>
+            <Link to="/">
+              <FaHome className={`${styles.icon} ${styles["icon-home"]}`} />
               <span className="label">Home</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#">
+            <Link to="/search">
               <FaSearch className={styles.icon} />
               <span className="label">Search</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#">
+            <Link to="/bookings">
               <FaCalendarAlt className={styles.icon} />
               <span className="label">Bookings</span>
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#">
+            <Link to="/profile">
               <FaUser className={styles.icon} />
               <span className="label">Profile</span>
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>
