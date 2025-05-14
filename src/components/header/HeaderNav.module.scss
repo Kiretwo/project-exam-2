@@ -3,7 +3,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: vars.$dark-gray; // Example background
+  background-color: vars.$primary-color;
   color: vars.$background-color;
 
   .navbar-brand a {
@@ -28,5 +28,10 @@
         color: vars.$light-gray;
       }
     }
+  }
+
+  // hide on ≤ medium (768px)
+  @include mixins.respond(medium) {
+    display: none;
   }
 }

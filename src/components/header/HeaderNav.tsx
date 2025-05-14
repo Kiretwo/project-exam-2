@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import styles from "./Navbar.module.scss";
+import styles from "./HeaderNav.module.scss";
 
 const Navbar: React.FC = () => {
   return (

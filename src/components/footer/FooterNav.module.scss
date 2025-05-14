@@ -1,0 +1,37 @@
+.footer-nav {
+  display: none;            // hidden by default
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: #fff;
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.1);
+  z-index: 1000;
+
+  // show on ≤ medium (768px)
+  @include mixins.respond(medium) {
+    display: block;
+  }
+
+  nav ul {
+    @include mixins.flex-center;
+    justify-content: space-around;
+    margin: 0; padding: 0.5rem 0;
+    li { list-style: none; }
+
+    a {
+      @include mixins.flex-center;
+      flex-direction: column;
+      font-size: 0.75rem;
+      color: vars.$text-color;
+      text-decoration: none;
+
+      .icon {
+        font-size: 1.4rem;
+        margin-bottom: 0.2rem;
+      }
+    }
+
+    .active a {
+      color: vars.$primary-color;
+    }
+  }
+}
