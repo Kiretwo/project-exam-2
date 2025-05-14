@@ -1,41 +1,60 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import { FaHome, FaSearch, FaCalendarAlt, FaUser } from "react-icons/fa";
 import styles from "./FooterNav.module.scss";
-import { Link } from "react-router-dom";
 
 const Footer: React.FC = () => {
   return (
     <footer className={styles["footer-nav"]}>
       <nav>
         <ul>
-          <li className={styles["home-btn"]}>
-            <Link to="/">
+          <li>
+            <NavLink
+              to="/"
+              end
+              className={({ isActive }) =>
+                `${styles.link} ${styles["home-btn"]} ${isActive ? styles.active : ""}`
+              }
+            >
               <FaHome className={`${styles.icon} ${styles["icon-home"]}`} />
-              <span className="label">Home</span>
-            </Link>
+              <span className={styles.label}>Home</span>
+            </NavLink>
           </li>
           <li>
-            <Link to="/search">
+            <NavLink
+              to="/search"
+              className={({ isActive }) =>
+                `${styles.link} ${isActive ? styles.active : ""}`
+              }
+            >
               <FaSearch className={styles.icon} />
-              <span className="label">Search</span>
-            </Link>
+              <span className={styles.label}>Search</span>
+            </NavLink>
           </li>
           <li>
-            <Link to="/bookings">
+            <NavLink
+              to="/bookings"
+              className={({ isActive }) =>
+                `${styles.link} ${isActive ? styles.active : ""}`
+              }
+            >
               <FaCalendarAlt className={styles.icon} />
-              <span className="label">Bookings</span>
-            </Link>
+              <span className={styles.label}>Bookings</span>
+            </NavLink>
           </li>
           <li>
-            <Link to="/profile">
+            <NavLink
+              to="/profile"
+              className={({ isActive }) =>
+                `${styles.link} ${isActive ? styles.active : ""}`
+              }
+            >
               <FaUser className={styles.icon} />
-              <span className="label">Profile</span>
-            </Link>
+              <span className={styles.label}>Profile</span>
+            </NavLink>
           </li>
         </ul>
       </nav>
-      {/* Desktop Footer */}
-      {/*       <p>&copy; {new Date().getFullYear()} Holidaze. All rights reserved.</p> */}
     </footer>
   );
 };
