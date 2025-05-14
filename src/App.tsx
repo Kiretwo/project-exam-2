@@ -7,7 +7,7 @@ import RegisterPage from "./pages/RegisterPage";
 import ProfilePage from "./pages/ProfilePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import Layout from "./Layout";
-import SearchPage from "./pages/SearchPage";
+import SearchPage from "./pages/search-page/SearchPage";
 
 function App() {
   return (

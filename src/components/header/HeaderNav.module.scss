@@ -1,36 +1,52 @@
+
 .navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  background: vars.$primary-color;
   padding: 1rem 2rem;
-  background-color: vars.$primary-color;
-  color: vars.$background-color;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
-  .navbar-brand a {
-    color: vars.$background-color;
-    text-decoration: none;
-    font-weight: bold;
+.navbar-brand {
+  display: flex;
+  flex-direction: column;      // Stack logo + welcome on mobile
+  align-items: flex-start;
+  gap: 1rem;                // small gap between the two
+
+  @include mixins.respond-min(medium) {
+    flex-direction: row;       // Side-by-side on ≥768px
+    align-items: center;
+    gap: 2rem;                 // larger gap on desktop
+  }
+
+  a {
+    color: white;
     font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: none;
+  }
+}
+
+.navbar-welcome {
+  color: white;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
   }
 
-  .navbar-links {
-    list-style: none;
-    display: flex;
-    gap: 1rem;
-    margin: 0;
-    padding: 0;
-
-    li a {
-      color: vars.$background-color;
-      text-decoration: none;
-
-      &:hover {
-        color: vars.$light-gray;
-      }
-    }
-  }
-
-  // hide on ≤ medium (768px)
+  // hide on smaller screens
   @include mixins.respond(medium) {
     display: none;
   }

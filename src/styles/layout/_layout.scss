@@ -9,6 +9,9 @@
 .main-content {
   flex: 1; // Allows the main content to grow and push the footer down
   padding: 1rem 2rem; // Add some padding around the page content
+  @include respond(medium) {
+    padding-bottom: 10rem; // Space for the footer
+  }
 }
 
 // Global Page Wrapper (Centers content)

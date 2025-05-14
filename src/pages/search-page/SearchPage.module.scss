@@ -1,0 +1,20 @@
+// 1. Full-width hero, 100% of viewport
+.hero {
+  // stretch beyond the usual padding:
+  width: calc(100% + 4rem);        // compensate for .main-content’s 2rem padding each side
+  margin: -1rem -2rem 2rem;            // pull it out to the edges
+  background: vars.$primary-color;
+  padding: 2rem;                   // inner spacing
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+// 2. Container for your white results area
+.resultsContainer {
+  // reuse your .container rules if you have them,
+  // or just center with max-width + auto margin:
+  max-width: 1200px;
+  margin: 0 auto;
+}
