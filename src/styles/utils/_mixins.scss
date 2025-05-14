@@ -1,0 +1,57 @@
+@use "sass:map";
+@use "variables" as vars;
+
+// Responsive Media Query Mixin
+@mixin respond($size) {
+  @media (max-width: map.get(vars.$breakpoints, $size)) {
+    @content;
+  }
+}
+
+@mixin respond-min($size) {
+  @media (min-width: map.get(vars.$breakpoints, $size)) {
+    @content;
+  }
+}
+
+// Flexbox Centering Mixin
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// Button Mixin
+@mixin button($bg: vars.$primary-color, $color: vars.$text-color) {
+  background-color: $bg;
+  color: $color;
+  padding: 12px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-family: vars.$font-stack;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+
+  &:hover {
+    background-color: darken($bg, 10%);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+// Comments
+
+// Responsive Media Query Mixin
+// This mixin allows you to apply styles conditionally based on screen size.
+// Instead of writing media queries manually, you pass a size name
+// (e.g., "small", "medium", "large"), and it retrieves the correct max-width value
+// from the $breakpoints map in "variables".
+//
+// Usage:
+// @include respond(medium) { ... }
+//
+// This will compile to:
+// @media (max-width: 768px) { ... }
