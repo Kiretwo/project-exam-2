@@ -5,6 +5,7 @@ import LoginForm from "../components/auth/login/LoginForm";
 import {
   loginUser,
   storeAccessToken,
+  storeUserName,
   LoginCredentials,
   LoginApiResponse,
 } from "../api/auth/login";
@@ -21,10 +22,13 @@ const LoginPage: React.FC = () => {
     try {
       // Use the LoginApiResponse type for the response
       const response: LoginApiResponse = await loginUser(credentials);
-      // Assuming the API returns a token and user data
+
+      // If API returns a token and user data
       if (response.data && response.data.accessToken) {
+        // store token & userName
         storeAccessToken(response.data.accessToken);
-        // You'll want to store user info in context or state management
+        storeUserName(response.data.name);
+
         console.log("Logged in user:", response.data);
         alert("Login successful!"); // Replace with actual success handling later
         navigate("/profile"); // Redirect to profile page or dashboard
@@ -41,7 +45,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <div>
-      {/* You can add a page-specific layout or heading here if needed */}
+      {/* Add a page-specific layout or heading here if needed */}
       <LoginForm onLogin={handleLogin} loading={loading} error={error} />
     </div>
   );
