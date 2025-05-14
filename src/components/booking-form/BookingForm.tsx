@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import styles from "./BookingForm.module.scss";
 
 export interface BookingParams {
@@ -14,17 +16,20 @@ interface Props {
 
 const BookingForm: React.FC<Props> = ({ onSearch }) => {
   const [location, setLocation] = useState("");
-  const [start, setStart] = useState(new Date());
-  const [end, setEnd] = useState(new Date());
+  const [start, setStart] = useState<Date | null>(new Date());
+  const [end, setEnd] = useState<Date | null>(new Date());
   const [guests, setGuests] = useState(1);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSearch({ location, start, end, guests });
+    if (start && end) {
+      onSearch({ location, start, end, guests });
+    }
   };
 
   return (
     <form className={styles.bookingForm} onSubmit={handleSubmit}>
+      {/* Location */}
       <div className={styles.field}>
         <label htmlFor="location">Where to?</label>
         <input
@@ -37,29 +42,51 @@ const BookingForm: React.FC<Props> = ({ onSearch }) => {
         />
       </div>
 
+      {/* Dates */}
       <div className={styles.datePickers}>
         <div className={styles.field}>
           <label htmlFor="start">From</label>
-          <input
+          <DatePicker
             id="start"
-            type="date"
-            value={start.toISOString().slice(0, 10)}
-            onChange={(e) => setStart(new Date(e.target.value))}
+            selected={start}
+            onChange={(date) => setStart(date)}
+            dateFormat="yyyy-MM-dd"
+            className={styles.dateInput}
+            placeholderText="Select start date"
             required
+            popperPlacement="bottom-start"
+            popperModifiers={[
+              {
+                name: "offset",
+                options: { offset: [0, 8] },
+                fn: (state) => state,
+              },
+            ]}
           />
         </div>
         <div className={styles.field}>
           <label htmlFor="end">To</label>
-          <input
+          <DatePicker
             id="end"
-            type="date"
-            value={end.toISOString().slice(0, 10)}
-            onChange={(e) => setEnd(new Date(e.target.value))}
+            selected={end}
+            onChange={(date) => setEnd(date)}
+            dateFormat="yyyy-MM-dd"
+            className={styles.dateInput}
+            placeholderText="Select end date"
             required
+            popperPlacement="bottom-start"
+            popperModifiers={[
+              {
+                name: "offset",
+                options: { offset: [0, 8] },
+                fn: (state) => state,
+              },
+            ]}
           />
         </div>
       </div>
 
+      {/* Guests */}
       <div className={styles.field}>
         <label htmlFor="guests">Guests</label>
         <select
@@ -75,6 +102,7 @@ const BookingForm: React.FC<Props> = ({ onSearch }) => {
         </select>
       </div>
 
+      {/* Submit */}
       <button type="submit" className={styles.searchButton}>
         Search
       </button>
