@@ -5,8 +5,12 @@ export interface Venue {
   id: string;
   name: string;
   price: number;
-  rating: number;
   media: { url: string; alt: string }[];
+  location: {
+    city: string;
+    country: string;
+    // add more fields if you need
+  };
 }
 
 interface Props {
@@ -26,8 +30,10 @@ const VenueCard: React.FC<Props> = ({ venue }) => {
       )}
       <div className={styles.info}>
         <h3 className={styles.title}>{venue.name}</h3>
+        <p className={styles.location}>
+          {venue.location.city}, {venue.location.country}
+        </p>
         <div className={styles.meta}>
-          <span className={styles.rating}>⭐ {venue.rating.toFixed(1)}</span>
           <span className={styles.price}>{venue.price} NOK/night</span>
         </div>
       </div>
