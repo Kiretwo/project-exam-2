@@ -56,6 +56,32 @@
   margin-top: -1rem;
 }
 
+.amenities-heading {
+  margin-top: 2rem;
+  font-size: 1.5rem;
+  color: vars.$text-color;
+}
+
+.amenities-list {
+  max-width: 600px;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+
+.amenity-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  color: vars.$text-color;
+}
+
+.amenity-icon {
+  font-size: 1.25rem;
+  color: vars.$secondary-color;
+}
+
 
 .price {
   font-weight: bold;

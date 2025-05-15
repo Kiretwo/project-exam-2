@@ -1,6 +1,8 @@
+// src/pages/venue-detail/VenueDetail.tsx
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
+import { FaWifi, FaParking, FaCoffee, FaPaw } from "react-icons/fa";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import styles from "./VenueDetail.module.scss";
 
@@ -14,6 +16,12 @@ interface VenueDetailData {
   location: {
     city: string;
     country: string;
+  };
+  meta: {
+    wifi: boolean;
+    parking: boolean;
+    breakfast: boolean;
+    pets: boolean;
   };
 }
 
@@ -52,9 +60,21 @@ const VenueDetail: React.FC = () => {
   if (error) return <div className={styles["error"]}>Error: {error}</div>;
   if (!venue) return null;
 
+  // Read-more logic
   const fullText = venue.description;
   const limit = 300;
   const shortText = fullText.slice(0, limit);
+  // Prepare amenities
+  const amenities: {
+    key: keyof VenueDetailData["meta"];
+    label: string;
+    icon: React.ReactNode; // Using React.ReactNode instead of JSX.Element
+  }[] = [
+    { key: "wifi", label: "Wi-Fi", icon: <FaWifi /> },
+    { key: "parking", label: "Parking", icon: <FaParking /> },
+    { key: "breakfast", label: "Breakfast", icon: <FaCoffee /> },
+    { key: "pets", label: "Pets", icon: <FaPaw /> },
+  ];
 
   return (
     <div className={styles["detail-page"]}>
@@ -99,6 +119,18 @@ const VenueDetail: React.FC = () => {
               {expanded ? "Read less" : "Read more"}
             </button>
           )}
+
+          <h3 className={styles["amenities-heading"]}>Amenities</h3>
+          <div className={styles["amenities-list"]}>
+            {amenities.map(({ key, label, icon }) =>
+              venue.meta[key] ? (
+                <div key={key} className={styles["amenity-item"]}>
+                  <span className={styles["amenity-icon"]}>{icon}</span>
+                  <span className={styles["amenity-label"]}>{label}</span>
+                </div>
+              ) : null
+            )}
+          </div>
         </div>
       </div>
     </div>
