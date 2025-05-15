@@ -1,7 +1,7 @@
 @use "../utils/variables" as vars;
 
 body {
-  font-family: "Roboto", Arial, Helvetica, sans-serif;
+  font-family: vars.$font-secondary;
   color: vars.$text-color;
   background-color: vars.$background-color;
   // Add other base typography styles here, e.g., font-size, line-height for body

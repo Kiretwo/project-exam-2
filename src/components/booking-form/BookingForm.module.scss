@@ -6,7 +6,6 @@
   max-width: 600px;
   width: 100%;
   margin: -2rem auto 2rem;
-
   display: grid;
   gap: 1rem;
 }
@@ -31,6 +30,7 @@
     background: vars.$background-color;
     color: vars.$text-color;
     width: 100%;
+    font-family: vars.$font-secondary;
   }
 }
 
