@@ -1,3 +1,4 @@
+// src/components/booking-form/BookingForm.tsx
 import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
@@ -22,31 +23,29 @@ const BookingForm: React.FC<Props> = ({ onSearch }) => {
   const [guests, setGuests] = useState(1);
   const navigate = useNavigate();
 
-  const handleStartDateChange = (date: Date | null) => {
-    setStart(date);
-    if (date && end && date > end) {
-      setEnd(date); // Adjust end date if start date is after it
-    }
+  // keep end >= start
+  const handleStartDateChange = (d: Date | null) => {
+    if (!d) return;
+    setStart(d);
+    if (end && d > end) setEnd(d);
+  };
+  const handleEndDateChange = (d: Date | null) => {
+    if (d && start && d < start) return; // guard
+    setEnd(d);
   };
 
-  const handleEndDateChange = (date: Date | null) => {
-    setEnd(date);
-  };
-
-  // detect once whether the browser supports native date + showPicker
+  // detect native picker
   const [hasNative, setHasNative] = useState(false);
   useEffect(() => {
-    const input = document.createElement("input");
-    input.setAttribute("type", "date");
+    const inp = document.createElement("input");
+    inp.type = "date";
     setHasNative(
-      input.type === "date" && typeof (input as any).showPicker === "function"
+      inp.type === "date" && typeof (inp as any).showPicker === "function"
     );
   }, []);
 
-  // refs to trigger the native picker
-  const startRef = useRef<HTMLInputElement | null>(null);
-  const endRef = useRef<HTMLInputElement | null>(null);
-
+  const startRef = useRef<HTMLInputElement>(null);
+  const endRef = useRef<HTMLInputElement>(null);
   const openPicker = (ref: React.RefObject<HTMLInputElement | null>) => {
     if (ref.current && typeof (ref.current as any).showPicker === "function") {
       (ref.current as any).showPicker();
@@ -56,22 +55,23 @@ const BookingForm: React.FC<Props> = ({ onSearch }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (start && end) {
-      onSearch({ location, start, end, guests }); // Keep existing callback
-
-      const queryParams = new URLSearchParams();
-      queryParams.append("location", location);
-      queryParams.append("start", start.toISOString().split("T")[0]); // Format as YYYY-MM-DD
-      queryParams.append("end", end.toISOString().split("T")[0]); // Format as YYYY-MM-DD
-      queryParams.append("guests", guests.toString());
-
-      // Navigate to the search page with query parameters
-      navigate(`/search?${queryParams.toString()}`);
+      onSearch({ location, start, end, guests });
+      // example of navigating with query params
+      const qp = new URLSearchParams({
+        location,
+        start: start.toISOString().slice(0, 10),
+        end: end.toISOString().slice(0, 10),
+        guests: guests.toString(),
+      }).toString();
+      navigate(`/search?${qp}`);
     }
   };
 
+  const today = new Date().toISOString().slice(0, 10);
+
   return (
     <form className={styles.bookingForm} onSubmit={handleSubmit}>
-      {/* Location */}
+      {/* 1) Location */}
       <div className={styles.field}>
         <label htmlFor="location">Where to?</label>
         <input
@@ -84,63 +84,72 @@ const BookingForm: React.FC<Props> = ({ onSearch }) => {
         />
       </div>
 
-      {/* Dates */}
+      {/* 2–3) Dates */}
       <div className={styles.datePickers}>
-        {["start", "end"].map((field) => {
-          const isStart = field === "start";
-          const date = isStart ? start : end;
-          const setDate = isStart
-            ? (d: Date | null) => handleStartDateChange(d)
-            : (d: Date | null) => handleEndDateChange(d);
-          const ref = isStart ? startRef : endRef;
+        {/* From */}
+        <div className={styles.field}>
+          <label htmlFor="start">From</label>
+          {hasNative ? (
+            <input
+              id="start"
+              ref={startRef}
+              type="date"
+              min={today}
+              value={start?.toISOString().slice(0, 10) || ""}
+              onFocus={() => openPicker(startRef)}
+              onClick={() => openPicker(startRef)}
+              onChange={(e) => handleStartDateChange(new Date(e.target.value))}
+              required
+              className={styles.dateInput}
+            />
+          ) : (
+            <DatePicker
+              id="start"
+              selected={start}
+              onChange={handleStartDateChange}
+              minDate={new Date()}
+              dateFormat="yyyy-MM-dd"
+              className={styles.dateInput}
+              placeholderText="Select date"
+              required
+              popperPlacement="bottom-start"
+            />
+          )}
+        </div>
 
-          return (
-            <div key={field} className={styles.field}>
-              <label htmlFor={field}>{isStart ? "From" : "To"}</label>
-
-              {hasNative ? (
-                <input
-                  id={field}
-                  ref={ref}
-                  type="date"
-                  value={date ? date.toISOString().slice(0, 10) : ""}
-                  onFocus={() => openPicker(ref)}
-                  onClick={() => openPicker(ref)}
-                  min={
-                    isStart
-                      ? new Date().toISOString().slice(0, 10)
-                      : start
-                      ? start.toISOString().slice(0, 10)
-                      : undefined
-                  }
-                  max={undefined} // Removed max restriction for both fields
-                  onChange={(e) => {
-                    const d = new Date(e.target.value);
-                    if (!isNaN(d.getTime())) setDate(d);
-                  }}
-                  required
-                  className={styles.dateInput}
-                />
-              ) : (
-                <DatePicker
-                  id={field}
-                  selected={date}
-                  onChange={(d: Date | null) => setDate(d)}
-                  minDate={isStart ? new Date() : start || new Date()} // Add minDate for start date picker (today) and fallback to today if start is null
-                  maxDate={undefined} // Removed maxDate restriction for both fields
-                  dateFormat="yyyy-MM-dd"
-                  className={styles.dateInput}
-                  placeholderText="Select date"
-                  required
-                  popperPlacement="bottom-start"
-                />
-              )}
-            </div>
-          );
-        })}
+        {/* To */}
+        <div className={styles.field}>
+          <label htmlFor="end">To</label>
+          {hasNative ? (
+            <input
+              id="end"
+              ref={endRef}
+              type="date"
+              min={start ? start.toISOString().slice(0, 10) : today}
+              value={end?.toISOString().slice(0, 10) || ""}
+              onFocus={() => openPicker(endRef)}
+              onClick={() => openPicker(endRef)}
+              onChange={(e) => handleEndDateChange(new Date(e.target.value))}
+              required
+              className={styles.dateInput}
+            />
+          ) : (
+            <DatePicker
+              id="end"
+              selected={end}
+              onChange={handleEndDateChange}
+              minDate={start || new Date()}
+              dateFormat="yyyy-MM-dd"
+              className={styles.dateInput}
+              placeholderText="Select date"
+              required
+              popperPlacement="bottom-start"
+            />
+          )}
+        </div>
       </div>
 
-      {/* Guests */}
+      {/* 4) Guests */}
       <div className={styles.field}>
         <label htmlFor="guests">Guests</label>
         <select
@@ -156,7 +165,7 @@ const BookingForm: React.FC<Props> = ({ onSearch }) => {
         </select>
       </div>
 
-      {/* Submit */}
+      {/* 5) Submit */}
       <button type="submit" className={styles.searchButton}>
         Search
       </button>
