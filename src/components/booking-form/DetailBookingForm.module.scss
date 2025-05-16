@@ -1,0 +1,70 @@
+.detail-booking-form {
+  background: vars.$background-color;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 2rem;
+
+  display: grid;
+  gap: 1rem;
+
+  @include mixins.respond-min(large) {
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    align-items: end;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+    color: vars.$text-color;
+  }
+
+  input,
+  select,
+  .date-input {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 1px solid vars.$light-gray;
+    border-radius: 0.375rem;
+    color: vars.$text-color;
+  }
+}
+
+.date-pickers {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+
+  @include mixins.respond-min(medium) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include mixins.respond-min(large) {
+    display: contents;
+  }
+}
+
+.book-button {
+  @include mixins.button(vars.$secondary-color, vars.$secondary-text-color);
+  font-weight: 600;
+  width: 100%;
+
+  @include mixins.respond-min(large) {
+    width: auto;
+  }
+}
+
+.error {
+  color: vars.$danger-color;
+  font-size: 0.9rem;
+}
+
+.success {
+  color: vars.$success-color;
+  font-size: 0.9rem;
+}

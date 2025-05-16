@@ -5,6 +5,7 @@ import { Carousel } from "react-responsive-carousel";
 import { FaWifi, FaParking, FaCoffee, FaPaw } from "react-icons/fa";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import styles from "./VenueDetail.module.scss";
+import DetailBookingForm from "../../components/booking-form/DetailBookingForm";
 
 interface VenueDetailData {
   id: string;
@@ -131,6 +132,8 @@ const VenueDetail: React.FC = () => {
               ) : null
             )}
           </div>
+
+          <DetailBookingForm venueId={venue.id} />
         </div>
       </div>
     </div>
