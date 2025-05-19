@@ -1,12 +1,14 @@
 import React, { useState } from "react";
-import BookingForm, { BookingParams } from "../../components/booking-form/BookingForm";
+import BookingForm, {
+  BookingParams,
+} from "../../components/bookings/BookingForm";
 import SearchResults from "../../components/search-results/SearchResults";
 import { Venue } from "../../components/venue-card/VenueCard";
 import styles from "./SearchPage.module.scss";
 
 const SearchPage: React.FC = () => {
   const [venues, setVenues] = useState<Venue[]>([]);
-  const [error,  setError]  = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const onSearch = async ({ location }: BookingParams) => {
@@ -15,7 +17,7 @@ const SearchPage: React.FC = () => {
 
     try {
       const baseUrl = import.meta.env.VITE_NOROFF_API_BASE_URL;
-      const apiKey  = import.meta.env.VITE_API_KEY;
+      const apiKey = import.meta.env.VITE_API_KEY;
       // use the "search" endpoint to filter by name/description
       const res = await fetch(
         `${baseUrl}/holidaze/venues/search?q=${encodeURIComponent(location)}`,
@@ -30,7 +32,7 @@ const SearchPage: React.FC = () => {
         throw new Error(`Server error ${res.status}`);
       }
 
-      const json = await res.json() as { data: Venue[] };
+      const json = (await res.json()) as { data: Venue[] };
       setVenues(json.data);
     } catch (e: any) {
       console.error("Fetch venues failed:", e);
@@ -48,7 +50,7 @@ const SearchPage: React.FC = () => {
 
       <section className={styles.resultsContainer}>
         {loading && <p>Loading venues…</p>}
-        {error   && <p className="error">{error}</p>}
+        {error && <p className="error">{error}</p>}
         <SearchResults venues={venues} />
       </section>
     </div>
