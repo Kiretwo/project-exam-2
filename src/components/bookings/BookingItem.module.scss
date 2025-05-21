@@ -1,0 +1,32 @@
+.booking-item {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 0;
+  margin-bottom: 0;
+  padding: 0;
+  border: 1px solid vars.$light-gray;
+  border-radius: 0.5rem;
+  background: vars.$background-color;
+  overflow: hidden;
+  min-height: 120px;
+  height: 100%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .booking-image {
+    width: 40%;
+    min-width: 0;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    display: block;
+    aspect-ratio: 1/1;
+    max-height: 200px;
+  }
+}

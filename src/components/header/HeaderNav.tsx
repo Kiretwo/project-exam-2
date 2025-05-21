@@ -15,11 +15,11 @@ const Navbar: React.FC = () => {
     <nav className={styles.navbar}>
       <div className={styles["navbar-brand"]}>
         <Link to="/">Holidaze</Link>
-        {name && (
+{/*         {name && (
           <span className={styles["navbar-welcome"]}>
             Welcome, {name}.
           </span>
-        )}
+        )} */}
       </div>
 
       <ul className={styles["navbar-links"]}>
