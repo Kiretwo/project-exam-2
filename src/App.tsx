@@ -8,6 +8,8 @@ import ProfilePage from "./pages/ProfilePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import Layout from "./Layout";
 import SearchPage from "./pages/search-page/SearchPage";
+import VenueDetail from "./pages/venue-detail/VenueDetail";
+import BookingPage from "./pages/booking-page/BookingPage";
 
 function App() {
   return (
@@ -19,7 +21,9 @@ function App() {
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
         <Route path="search" element={<SearchPage />} />
+        <Route path="bookings" element={<BookingPage />} />
         <Route path="profile" element={<ProfilePage />} />
+        <Route path="venues/:id" element={<VenueDetail />} />
         <Route path="*" element={<NotFoundPage />} /> {/* Catch-all route */}
       </Route>
     </Routes>

@@ -1,0 +1,35 @@
+.bookings-page {
+
+  h1 {
+    margin-bottom: 1rem;
+    color: vars.$text-color;
+    font-size: 1.75rem;
+    font-weight: 600;
+  }
+
+  .bookings-error {
+    color: vars.$danger-color;
+    border-radius: 0.5rem;
+    background-color: rgba(vars.$danger-color, 0.05);
+  }
+
+  .bookings-message {
+    color: vars.$dark-gray;
+  }
+
+  .bookings-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 0;
+    list-style: none;
+
+    @include mixins.respond-min(medium) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @include mixins.respond-min(xlarge) {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+}
