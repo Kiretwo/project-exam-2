@@ -1,33 +1,35 @@
 .bookings-page {
-  padding: 1rem;
 
   h1 {
     margin-bottom: 1rem;
+    color: vars.$text-color;
+    font-size: 1.75rem;
+    font-weight: 600;
   }
 
   .bookings-error {
-    color: red;
+    color: vars.$danger-color;
+    border-radius: 0.5rem;
+    background-color: rgba(vars.$danger-color, 0.05);
+  }
+
+  .bookings-message {
+    color: vars.$dark-gray;
   }
 
   .bookings-list {
-    list-style: none;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
     padding: 0;
+    list-style: none;
 
-    .booking-item {
-      margin-bottom: 1.5rem;
-      padding: 1rem;
-      border: 1px solid #e0e0e0;
-      border-radius: 0.5rem;
+    @include mixins.respond-min(medium) {
+      grid-template-columns: 1fr 1fr;
+    }
 
-      h2 {
-        margin: 0 0 0.5rem;
-        font-size: 1.25rem;
-      }
-
-      p {
-        margin: 0;
-        line-height: 1.4;
-      }
+    @include mixins.respond-min(xlarge) {
+      grid-template-columns: 1fr 1fr 1fr;
     }
   }
 }

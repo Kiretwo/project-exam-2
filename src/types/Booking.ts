@@ -3,6 +3,11 @@ export interface Booking {
   venueId: string;
   userId: string;
   dateFrom: string;
-  dateTo: string; 
+  dateTo: string;
   guests: number;
+  venue?: {
+    id: string;
+    name: string;
+    media: { url: string; alt: string }[];
+  };
 }

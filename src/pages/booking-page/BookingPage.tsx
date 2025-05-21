@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styles from "./BookingPage.module.scss";
 import { Booking } from "../../types/Booking";
+import BookingItem from "../../components/bookings/BookingItem";
 
 const API_BASE_URL = import.meta.env.VITE_NOROFF_API_BASE_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
 
+/**
+ * BookingPage displays all bookings for the current user
+ */
 const BookingPage: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -14,32 +18,40 @@ const BookingPage: React.FC = () => {
     const fetchBookings = async () => {
       setLoading(true);
       setError(null);
+
       try {
+        // Get authentication details
         const token = localStorage.getItem("accessToken");
         const username = localStorage.getItem("userName");
+
         if (!token || !username) {
-          throw new Error('User not authenticated');
+          throw new Error("User not authenticated");
         }
+
+        // Fetch bookings with embedded venue details
         const res = await fetch(
-          `${API_BASE_URL}/holidaze/profiles/${username}/bookings`,
+          `${API_BASE_URL}/holidaze/profiles/${username}/bookings?_venue=true`,
           {
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
               Authorization: `Bearer ${token}`,
-              'X-Noroff-API-Key': API_KEY,
+              "X-Noroff-API-Key": API_KEY,
             },
           }
         );
+
         if (!res.ok) {
           throw new Error(`Failed to fetch bookings: ${res.status}`);
         }
+
         const json = await res.json();
         setBookings(json.data);
       } catch (err: any) {
         setError(err.message);
+        console.error("Error fetching bookings:", err);
       } finally {
         setLoading(false);
-      }  
+      }
     };
 
     fetchBookings();
@@ -47,31 +59,37 @@ const BookingPage: React.FC = () => {
 
   return (
     <div className={styles["bookings-page"]}>
-      <h1>Your Bookings</h1>
-      {loading ? (
-        <p>Loading your bookings...</p>
-      ) : error ? (
-        <p className={styles["bookings-error"]}>Error: {error}</p>
-      ) : bookings.length === 0 ? (
-        <p>You have no upcoming bookings.</p>
-      ) : (
-        <ul className={styles["bookings-list"]}>
-          {bookings.map((booking) => (
-            <li key={booking.id} className={styles["booking-item"]}>
-              <h2>Venue ID: {booking.venueId}</h2>
-              <p>
-                From: {new Date(booking.dateFrom).toLocaleDateString()}
-                <br />
-                To: {new Date(booking.dateTo).toLocaleDateString()}
-                <br />
-                Guests: {booking.guests}
-              </p>
-            </li>
-          ))}
-        </ul>
-      )}
+      <div className="container">
+        <h1>Your Bookings</h1>
+
+        {loading && (
+          <div className={styles["bookings-message"]}>
+            <p>Loading your bookings...</p>
+          </div>
+        )}
+
+        {error && (
+          <div className={styles["bookings-error"]}>
+            <p>Error: {error}</p>
+          </div>
+        )}
+
+        {!loading && !error && bookings.length === 0 && (
+          <div className={styles["bookings-message"]}>
+            <p>You have no upcoming bookings.</p>
+          </div>
+        )}
+
+        {!loading && !error && bookings.length > 0 && (
+          <ul className={styles["bookings-list"]}>
+            {bookings.map((booking) => (
+              <BookingItem key={booking.id} booking={booking} />
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
-}
+};
 
 export default BookingPage;
