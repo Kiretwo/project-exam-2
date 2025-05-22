@@ -134,9 +134,7 @@ const ProfilePage: React.FC = () => {
               </div>
               <h2 className={styles.name}>{profile.name}</h2>
               <p className={styles.email}>
-                {profile.email
-                  ? `Email: ${profile.email}`
-                  : `Email: ${localStorage.getItem("userName")}`}
+                {profile.email}
               </p>
               {profile.bio && <p className={styles.bio}>{profile.bio}</p>}
               <div className={styles.actions}>
