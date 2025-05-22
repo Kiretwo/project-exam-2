@@ -1,22 +1,21 @@
 .profile-page {
+  background-color: #fff;
+  min-height: calc(100vh - 60px);
 
   // Banner: either a colored placeholder or a user-uploaded image
   .banner {
     width: 100%;
-    height: 200px;
-    background-color: vars.$light-gray;
+    height: 140px;
+    background-color: #e9ecef;
     background-size: cover;
     background-position: center;
-
-    @include mixins.respond(medium) {
-      height: 150px;
-    }
-  }
-
-  .title {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-    color: vars.$text-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #495057;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 0 1rem;
   }
 
   .success {
@@ -30,56 +29,260 @@
   .error {
     color: vars.$danger-color;
     margin-bottom: 1rem;
-  }
-
-  .header {
-    @include mixins.flex-center;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
-
+  }  .header {
+    padding: 1.5rem 0;
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+    
     @include mixins.respond(medium) {
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
+      text-align: center;
+      padding: 1rem 0;
     }
   }
-
+  
+  .avatarContainer {
+    margin-right: 1.5rem;
+    
+    @include mixins.respond(medium) {
+      margin-right: 0;
+      margin-bottom: 1rem;
+    }
+  }
   .avatar {
     width: 80px;
     height: 80px;
     border-radius: 50%;
     object-fit: cover;
+    border: none;
+    background-color: #f8f9fa;
   }
-
   .info {
     flex: 1;
-
-    .name {
-      font-size: 1.5rem;
-      margin: 0;
-      color: vars.$text-color;
-    }
-
-    .bio {
-      margin: 0.25rem 0 0;
-      color: vars.$secondary-text-color;
-    }
-  }
-
-  .venueBtn {
-    @include mixins.button(vars.$primary-color, vars.$secondary-text-color);
-
+    
     @include mixins.respond(medium) {
       width: 100%;
     }
 
-    &.remove-hover {
-      @include mixins.button(vars.$danger-color, vars.$secondary-text-color);
+    .name {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin: 0;
+      color: vars.$text-color;
+    }
+
+    .email {
+      font-size: 0.9rem;
+      color: vars.$secondary-text-color;
+      margin: 0.2rem 0 0;
+    }
+
+    .bio {
+      margin: 0.5rem 0 0;
+      color: vars.$secondary-text-color;
+      font-size: 0.9rem;
+      max-width: 90%;
+      
+      @include mixins.respond(medium) {
+        max-width: 100%;
+        text-align: center;
+        margin: 0.5rem auto 0;
+      }
+    }
+  }  .actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    
+    @include mixins.respond(medium) {
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .actionBtn {
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      text-decoration: none;
+      font-weight: 500;
+      
+      @include mixins.respond(medium) {
+        width: 100%;
+        max-width: 250px;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    .editBtn {
+      background-color: #f8f9fa;
+      color: vars.$text-color;
+      border: 1px solid #dee2e6;
+      
+      &:hover {
+        background-color: #e9ecef;
+      }
+    }
+
+    .venueBtn {
+      background-color: #0466c8;
+      color: white;
+      border: none;
+      
+      &.active {
+        background-color: vars.$primary-color;
+      }
+      
+      &:hover {
+        opacity: 0.9;
+      }
     }
   }
-
-  .nextTrip,
-  .adminSection {
+  .navTabs {
+    background-color: #fff;
+    border-bottom: 1px solid #dee2e6;
     margin-top: 2rem;
+
+    .tabsContainer {
+      display: flex;
+      width: 100%;
+      
+      @include mixins.respond(medium) {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+
+    .tab {
+      padding: 1rem;
+      color: vars.$secondary-text-color;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-align: center;
+      transition: all 0.2s ease;
+      
+      @include mixins.respond(medium) {
+        flex: 1 0 50%;
+        padding: 0.75rem;
+      }
+      
+      &.active {
+        color: #0466c8;
+        border-color: #0466c8;
+      }
+
+      &:hover:not(.active) {
+        background-color: rgba(0, 0, 0, 0.03);
+      }
+    }
+  }  .contentSection {
+    padding: 2rem 0;
+    min-height: 300px;
+  }
+  
+  .venuesList,
+  .tripContent,
+  .bookingsList,
+  .manageContent {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    // Placeholder styling
+    color: #6c757d;
+    font-size: 1rem;
+    padding: 2rem 0;
+    text-align: center;
+  }
+    .logout {
+    position: fixed;
+    top: 4rem;
+    right: 1rem;
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+    color: vars.$danger-color;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    
+    &:hover {
+      background-color: #f8f9fa;
+    }
+    
+    @include mixins.respond(medium) {
+      position: absolute;
+      top: 1rem;
+    }
+  }
+  
+  .success {
+    background-color: rgba(vars.$success-color, 0.1);
+    color: vars.$success-color;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+  }
+  .error {
+    color: vars.$danger-color;
+    margin: 1rem 0;
+    padding: 1rem;
+    text-align: center;
+  }
+  
+  .loadingState {
+    padding: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    .loadingAvatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background-color: #e9ecef;
+      margin-bottom: 1rem;
+      animation: pulse 1.5s infinite;
+    }
+    
+    .loadingText {
+      height: 1rem;
+      width: 200px;
+      background-color: #e9ecef;
+      margin-bottom: 0.75rem;
+      border-radius: 4px;
+      animation: pulse 1.5s infinite;
+      
+      &:last-child {
+        width: 150px;
+      }
+    }
+  }
+  
+  @keyframes pulse {
+    0% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.6;
+    }
   }
 }

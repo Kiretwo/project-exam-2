@@ -1,4 +1,3 @@
-
 .navbar {
   background: vars.$primary-color;
   padding: 1rem 2rem;
@@ -10,14 +9,14 @@
 
 .navbar-brand {
   display: flex;
-  flex-direction: column;      // Stack logo + welcome on mobile
+  flex-direction: column; // Stack logo + welcome on mobile
   align-items: flex-start;
-  gap: 1rem;                // small gap between the two
+  gap: 1rem; // small gap between the two
 
   @include mixins.respond-min(medium) {
-    flex-direction: row;       // Side-by-side on ≥768px
+    flex-direction: row; // Side-by-side on ≥768px
     align-items: center;
-    gap: 2rem;                 // larger gap on desktop
+    gap: 2rem; // larger gap on desktop
   }
 
   a {
@@ -40,11 +39,26 @@
   list-style: none;
   margin: 0;
   padding: 0;
-
   li a {
     color: white;
     text-decoration: none;
     font-size: 1rem;
+  }
+
+  .create-venue-btn {
+    background-color: #0466c8;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.9rem;
+
+    &:hover {
+      background-color: #0353a4;
+    }
   }
 
   // hide on smaller screens
