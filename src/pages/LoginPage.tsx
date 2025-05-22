@@ -29,6 +29,15 @@ const LoginPage: React.FC = () => {
         storeAccessToken(response.data.accessToken);
         storeUserName(response.data.name);
 
+        // Check and store venue manager status
+        if (response.data.venueManager) {
+          localStorage.setItem("isVenueManager", "true");
+          console.log("User is a venue manager, setting localStorage");
+        } else {
+          localStorage.setItem("isVenueManager", "false");
+          console.log("User is not a venue manager, setting localStorage");
+        }
+
         console.log("Logged in user:", response.data);
         alert("Login successful!"); // Replace with actual success handling later
         navigate("/profile"); // Redirect to profile page or dashboard

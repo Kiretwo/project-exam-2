@@ -27,6 +27,12 @@
   }
 }
 
+.navbarActions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
 .navbar-welcome {
   color: white;
   font-size: 1rem;
@@ -45,24 +51,28 @@
     font-size: 1rem;
   }
 
-  .create-venue-btn {
-    background-color: #0466c8;
-    color: white;
-    border: none;
-    border-radius: 20px;
-    padding: 0.5rem 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    font-size: 0.9rem;
-
-    &:hover {
-      background-color: #0353a4;
-    }
-  }
-
-  // hide on smaller screens
+  // hide regular links on smaller screens
   @include mixins.respond(medium) {
     display: none;
+  }
+}
+
+// Create venue button styling, now separate from navbar-links
+.create-venue-btn {
+  background-color: #0466c8;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
+
+  &:hover {
+    background-color: #0353a4;
   }
 }

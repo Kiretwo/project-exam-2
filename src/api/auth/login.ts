@@ -78,4 +78,5 @@ export const getUserName = (): string | null => {
 export const clearAuth = () => {
   localStorage.removeItem("accessToken");
   localStorage.removeItem("userName");
+  localStorage.removeItem("isVenueManager");
 };
