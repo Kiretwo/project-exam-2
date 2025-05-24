@@ -10,6 +10,7 @@ import Layout from "./Layout";
 import SearchPage from "./pages/search-page/SearchPage";
 import VenueDetail from "./pages/venue-detail/VenueDetail";
 import BookingPage from "./pages/booking-page/BookingPage";
+import CreateVenuePage from "./pages/create-venue/CreateVenuePage";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="search" element={<SearchPage />} />
         <Route path="bookings" element={<BookingPage />} />
         <Route path="profile" element={<ProfilePage />} />
+        <Route path="create-venue" element={<CreateVenuePage />} />
         <Route path="venues/:id" element={<VenueDetail />} />
         <Route path="*" element={<NotFoundPage />} /> {/* Catch-all route */}
       </Route>

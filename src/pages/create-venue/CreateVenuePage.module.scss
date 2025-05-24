@@ -1,0 +1,348 @@
+// Variables and mixins are automatically imported via Vite config
+
+.create-venue-page {
+  min-height: 80vh;
+
+  h1 {
+    margin-bottom: 2rem;
+    color: vars.$text-color;
+    font-size: 2rem;
+    font-weight: 600;
+    
+    @include mixins.respond-min(large) {
+      margin-bottom: 2.5rem;
+      font-size: 2.25rem;
+    }
+  }
+}
+
+.error {
+  background-color: rgba(vars.$danger-color, 0.1);
+  color: vars.$danger-color;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(vars.$danger-color, 0.3);
+}
+
+.success {
+  background-color: rgba(vars.$success-color, 0.1);
+  color: vars.$success-color;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(vars.$success-color, 0.3);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  max-width: 800px;  @include mixins.respond-min(large) {
+    max-width: none;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: auto;
+    gap: 2rem;
+    align-items: start;
+    grid-template-areas:
+      "basic images"
+      "location images"
+      "amenities images"
+      "submit submit";
+  }
+}
+
+.section {
+  background: vars.$background-color;
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid vars.$light-gray;
+
+  h2 {
+    margin: 0 0 1.5rem 0;
+    color: vars.$primary-color;
+    font-size: 1.25rem;
+    font-weight: 600;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid vars.$light-gray;
+  }
+  // Grid area assignments for large screens
+  @include mixins.respond-min(large) {
+    &:nth-of-type(1) {
+      grid-area: basic;
+    }    &:nth-of-type(2) {
+      grid-area: images;
+      position: sticky;
+      top: 2rem;
+      align-self: start;
+      
+      .imagePreviews {
+        .previewGrid {
+          grid-template-columns: 1fr;
+          gap: 0.75rem;
+        }
+        
+        .previewItem {
+          img {
+            height: 100px;
+          }
+          
+          .previewInfo {
+            padding: 0.5rem;
+            
+            p {
+              margin: 0 0 0.5rem 0;
+              font-size: 0.8rem;
+              line-height: 1.2;
+            }
+          }
+          
+          .removeBtn {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+          }
+        }
+      }
+    }
+    
+    &:nth-of-type(3) {
+      grid-area: amenities;
+    }
+    
+    &:nth-of-type(4) {
+      grid-area: location;
+    }
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  label {
+    font-weight: 500;
+    color: vars.$text-color;
+    font-size: 0.9rem;
+  }
+
+  input,
+  textarea,
+  select {
+    padding: 0.75rem;
+    border: 1px solid vars.$light-gray;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    font-family: vars.$font-primary;
+    color: vars.$text-color;
+    background: vars.$background-color;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus {
+      outline: none;
+      border-color: vars.$secondary-color;
+      box-shadow: 0 0 0 3px rgba(vars.$secondary-color, 0.1);
+    }
+
+    &::placeholder {
+      color: vars.$dark-gray;
+      opacity: 0.7;
+    }
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+}
+
+.fieldRow {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+
+  @include mixins.respond-min(medium) {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+// Image upload section
+.imageUpload {
+  margin-bottom: 1rem;
+
+  .fieldRow {
+    align-items: end;
+
+    @include mixins.respond-min(medium) {
+      grid-template-columns: 2fr 1.5fr auto;
+    }
+  }
+}
+
+.addImageBtn {
+  @include mixins.button(vars.$secondary-color, vars.$secondary-text-color);
+  padding: 0.75rem 1.5rem;
+  font-size: 0.9rem;
+  align-self: end;
+  white-space: nowrap;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.imagePreviews {
+  margin-top: 1rem;
+
+  h3 {
+    margin: 0 0 0.75rem 0;
+    color: vars.$text-color;
+    font-size: 1rem;
+  }
+}
+
+.previewGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+
+  @include mixins.respond-min(medium) {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}
+
+.previewItem {
+  border: 1px solid vars.$light-gray;
+  border-radius: 0.375rem;
+  overflow: hidden;
+  background: vars.$background-color;
+  display: flex;
+  flex-direction: column;
+
+  img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.previewInfo {
+  padding: 0.6rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  p {
+    margin: 0 0 0.4rem 0;
+    font-size: 0.85rem;
+    color: vars.$text-color;
+    line-height: 1.25;
+    overflow-wrap: break-word;
+    flex-grow: 1;
+  }
+}
+
+.removeBtn {
+  @include mixins.button(vars.$danger-color, white);
+  padding: 0.4rem 0.8rem;
+  font-size: 0.75rem;
+}
+
+// Amenities section
+.checkboxGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+
+  @include mixins.respond-min(medium) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  input[type="checkbox"] {
+    width: 1.2rem;
+    height: 1.2rem;
+    cursor: pointer;
+    accent-color: vars.$secondary-color;
+  }
+
+  label {
+    cursor: pointer;
+    font-size: 1rem;
+    color: vars.$text-color;
+    font-weight: normal;
+  }
+}
+
+// Submit section
+.submitSection {
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+
+  @include mixins.respond-min(large) {
+    grid-area: submit;
+    justify-content: flex-start;
+    padding-top: 2rem;
+  }
+}
+
+.submitBtn {
+  @include mixins.button(vars.$primary-color, vars.$secondary-text-color);
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  min-width: 200px;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// Responsive adjustments
+@include mixins.respond(medium) {
+  .create-venue-page {
+    padding: 1rem 0;
+
+    h1 {
+      font-size: 1.75rem;
+    }
+  }
+
+  .section {
+    padding: 1rem;
+    
+    h2 {
+      font-size: 1.1rem;
+    }
+  }
+
+  .checkboxGrid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .fieldRow {
+    grid-template-columns: 1fr;
+  }
+
+  .imageUpload .fieldRow {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .addImageBtn {
+    align-self: stretch;
+  }
+}
