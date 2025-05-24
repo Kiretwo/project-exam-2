@@ -15,12 +15,12 @@ const Navbar: React.FC = () => {
     // Check if user is a venue manager from localStorage and update immediately
     const userIsVenueManager =
       localStorage.getItem("isVenueManager") === "true";
-    console.log(
+/*     console.log(
       "HeaderNav: userName =",
       name,
       "isVenueManager =",
       userIsVenueManager
-    );
+    ); */
     setIsVenueManager(userIsVenueManager);
     // Add event listeners for both storage and custom events
     const handleStorageChange = () => {
