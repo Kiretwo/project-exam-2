@@ -40,14 +40,13 @@ const CreateVenuePage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
-
   // Form state
   const [formData, setFormData] = useState<VenueData>({
     name: "",
     description: "",
     media: [],
     price: 0,
-    maxGuests: 1,
+    maxGuests: 0,
     rating: 0,
     meta: {
       wifi: false,
@@ -66,25 +65,34 @@ const CreateVenuePage: React.FC = () => {
     },
   });
 
+  // Display values for form inputs (empty strings for better UX)
+  const [displayValues, setDisplayValues] = useState({
+    price: "",
+    rating: "",
+    lat: "",
+    lng: "",
+    maxGuests: "",
+  });
+
   // Image handling
   const [imageUrl, setImageUrl] = useState("");
   const [imageAlt, setImageAlt] = useState("");
   const [imagePreviews, setImagePreviews] = useState<ImagePreview[]>([]);
   const addImage = () => {
     if (!imageUrl.trim()) return;
-    
+
     // Validate image URL
     if (!isValidImageUrl(imageUrl.trim())) {
       setError("Please enter a valid image URL");
       return;
     }
-    
+
     const newImage: ImagePreview = {
       url: imageUrl.trim(),
       alt: imageAlt.trim() || formData.name,
       id: Date.now().toString(),
     };
-    
+
     setImagePreviews([...imagePreviews, newImage]);
     setImageUrl("");
     setImageAlt("");
@@ -92,34 +100,53 @@ const CreateVenuePage: React.FC = () => {
   };
 
   const removeImage = (id: string) => {
-    setImagePreviews(imagePreviews.filter(img => img.id !== id));
+    setImagePreviews(imagePreviews.filter((img) => img.id !== id));
   };
-
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value, type } = e.target;
-    
+
     if (type === "checkbox") {
       const checked = (e.target as HTMLInputElement).checked;
       if (name.startsWith("meta.")) {
         const metaKey = name.split(".")[1] as keyof VenueData["meta"];
-        setFormData(prev => ({
+        setFormData((prev) => ({
           ...prev,
-          meta: { ...prev.meta, [metaKey]: checked }
+          meta: { ...prev.meta, [metaKey]: checked },
         }));
       }
     } else if (name.startsWith("location.")) {
       const locationKey = name.split(".")[1] as keyof VenueData["location"];
-      const parsedValue = locationKey === "lat" || locationKey === "lng" ? 
-        parseFloat(value) || 0 : value;
-      setFormData(prev => ({
-        ...prev,
-        location: { ...prev.location, [locationKey]: parsedValue }
-      }));
+
+      if (locationKey === "lat" || locationKey === "lng") {
+        // Update display value for coordinates
+        setDisplayValues((prev) => ({ ...prev, [locationKey]: value }));
+        const parsedValue = parseFloat(value) || 0;
+        setFormData((prev) => ({
+          ...prev,
+          location: { ...prev.location, [locationKey]: parsedValue },
+        }));
+      } else {
+        // Regular string location fields
+        setFormData((prev) => ({
+          ...prev,
+          location: { ...prev.location, [locationKey]: value },
+        }));
+      }
     } else {
-      const parsedValue = type === "number" ? parseFloat(value) || 0 : value;
-      setFormData(prev => ({ ...prev, [name]: parsedValue }));
+      // Handle other fields
+      if (name === "price" || name === "rating" || name === "maxGuests") {
+        // Update display value for these numeric fields
+        setDisplayValues((prev) => ({ ...prev, [name]: value }));
+        const parsedValue = parseFloat(value) || 0;
+        setFormData((prev) => ({ ...prev, [name]: parsedValue }));
+      } else {
+        const parsedValue = type === "number" ? parseFloat(value) || 0 : value;
+        setFormData((prev) => ({ ...prev, [name]: parsedValue }));
+      }
     }
   };
 
@@ -133,8 +160,8 @@ const CreateVenuePage: React.FC = () => {
       // Prepare venue data
       const venueData = {
         ...formData,
-        media: imagePreviews.map(img => ({ url: img.url, alt: img.alt })),
-      };      // Validate required fields
+        media: imagePreviews.map((img) => ({ url: img.url, alt: img.alt })),
+      }; // Validate required fields
       const validationErrors = validateVenueForm({
         name: venueData.name,
         description: venueData.description,
@@ -156,19 +183,20 @@ const CreateVenuePage: React.FC = () => {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.errors?.[0]?.message || `HTTP ${response.status}`);
+        throw new Error(
+          errorData.errors?.[0]?.message || `HTTP ${response.status}`
+        );
       }
 
       const result = await response.json();
       console.log("Venue created:", result);
 
       setSuccess("Venue created successfully!");
-      
+
       // Redirect after a short delay
       setTimeout(() => {
         navigate(`/venues/${result.data.id}`);
       }, 2000);
-
     } catch (err: any) {
       console.error("Error creating venue:", err);
       setError(err.message || "Failed to create venue");
@@ -189,7 +217,7 @@ const CreateVenuePage: React.FC = () => {
           {/* Basic Information */}
           <section className={styles.section}>
             <h2>Basic Information</h2>
-            
+
             <div className={styles.field}>
               <label htmlFor="name">Venue Name *</label>
               <input
@@ -217,45 +245,46 @@ const CreateVenuePage: React.FC = () => {
             </div>
 
             <div className={styles.fieldRow}>
+              {" "}
               <div className={styles.field}>
                 <label htmlFor="price">Price per night (NOK) *</label>
                 <input
                   type="number"
                   id="price"
                   name="price"
-                  value={formData.price}
+                  value={displayValues.price}
                   onChange={handleInputChange}
                   required
                   min="1"
                   placeholder="500"
                 />
               </div>
-
               <div className={styles.field}>
                 <label htmlFor="maxGuests">Max Guests *</label>
                 <input
                   type="number"
                   id="maxGuests"
                   name="maxGuests"
-                  value={formData.maxGuests}
+                  value={displayValues.maxGuests}
                   onChange={handleInputChange}
                   required
                   min="1"
                   max="20"
+                  placeholder="1"
                 />
               </div>
-
               <div className={styles.field}>
                 <label htmlFor="rating">Rating (0-5)</label>
                 <input
                   type="number"
                   id="rating"
                   name="rating"
-                  value={formData.rating}
+                  value={displayValues.rating}
                   onChange={handleInputChange}
                   min="0"
                   max="5"
                   step="0.1"
+                  placeholder="0.0"
                 />
               </div>
             </div>
@@ -264,7 +293,7 @@ const CreateVenuePage: React.FC = () => {
           {/* Images */}
           <section className={styles.section}>
             <h2>Images</h2>
-            
+
             <div className={styles.imageUpload}>
               <div className={styles.fieldRow}>
                 <div className={styles.field}>
@@ -327,7 +356,7 @@ const CreateVenuePage: React.FC = () => {
           {/* Amenities */}
           <section className={styles.section}>
             <h2>Amenities</h2>
-            
+
             <div className={styles.checkboxGrid}>
               <div className={styles.checkbox}>
                 <input
@@ -378,7 +407,7 @@ const CreateVenuePage: React.FC = () => {
           {/* Location */}
           <section className={styles.section}>
             <h2>Location</h2>
-            
+
             <div className={styles.fieldRow}>
               <div className={styles.field}>
                 <label htmlFor="address">Address</label>
@@ -444,26 +473,26 @@ const CreateVenuePage: React.FC = () => {
             </div>
 
             <div className={styles.fieldRow}>
+              {" "}
               <div className={styles.field}>
                 <label htmlFor="lat">Latitude</label>
                 <input
                   type="number"
                   id="lat"
                   name="location.lat"
-                  value={formData.location.lat}
+                  value={displayValues.lat}
                   onChange={handleInputChange}
                   step="any"
                   placeholder="0.0"
                 />
               </div>
-
               <div className={styles.field}>
                 <label htmlFor="lng">Longitude</label>
                 <input
                   type="number"
                   id="lng"
                   name="location.lng"
-                  value={formData.location.lng}
+                  value={displayValues.lng}
                   onChange={handleInputChange}
                   step="any"
                   placeholder="0.0"

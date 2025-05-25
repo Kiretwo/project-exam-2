@@ -9,16 +9,17 @@ export const isValidUrl = (url: string): boolean => {
 
 export const isValidImageUrl = (url: string): boolean => {
   if (!isValidUrl(url)) return false;
-  
+
   // Check if URL ends with common image extensions
-  const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'];
+  const imageExtensions = [".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg"];
   const urlLower = url.toLowerCase();
-  
-  return imageExtensions.some(ext => 
-    urlLower.includes(ext) || 
-    urlLower.includes('image') || 
-    urlLower.includes('photo') ||
-    urlLower.includes('picture')
+
+  return imageExtensions.some(
+    (ext) =>
+      urlLower.includes(ext) ||
+      urlLower.includes("image") ||
+      urlLower.includes("photo") ||
+      urlLower.includes("picture")
   );
 };
 
