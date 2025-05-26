@@ -204,10 +204,9 @@ const CreateVenuePage: React.FC = () => {
       setLoading(false);
     }
   };
-
   return (
-    <div className={styles["create-venue-page"]}>
-      <div className="container">
+    <div className="container">
+      <div className={styles["create-venue-page"]}>
         <h1>Create New Venue</h1>
 
         {error && <div className={styles.error}>{error}</div>}
@@ -497,7 +496,7 @@ const CreateVenuePage: React.FC = () => {
             >
               {loading ? "Creating Venue..." : "Create Venue"}
             </button>
-          </div>
+          </div>{" "}
         </form>
       </div>
     </div>

@@ -35,20 +35,20 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 2.5rem;
+  gap: 1.5rem;
   max-width: 800px;
   @include mixins.respond-min(xlarge) {
     max-width: none;
     display: grid;
     grid-template-columns: 2fr 1fr;
     grid-template-rows: auto;
-    gap: 2rem;
+    gap: 1.5rem;
     align-items: start;
     grid-template-areas:
       "basic images"
       "location images"
       "amenities images"
-      "submit submit";
+      "submit images";
   }
 }
 
@@ -89,7 +89,7 @@
           }
 
           .preview-info {
-            padding: 0.5rem;
+            padding: 0rem;
 
             p {
               margin: 0 0 0.5rem 0;
@@ -334,11 +334,11 @@
 .submit-section {
   display: flex;
   justify-content: center;
-  padding-top: 1rem;
+  padding-top: 0.7rem;
   @include mixins.respond-min(xlarge) {
     grid-area: submit;
     justify-content: flex-start;
-    padding-top: 2rem;
+    padding-top: 1rem;
   }
 }
 
@@ -347,7 +347,8 @@
   padding: 1rem 2rem;
   font-size: 1.1rem;
   font-weight: 600;
-  min-width: 200px;
+  width: 100%;
+  grid-area: submit;
 
   &:disabled {
     opacity: 0.6;
