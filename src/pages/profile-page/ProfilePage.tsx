@@ -4,6 +4,7 @@ import { FaUserEdit, FaSignOutAlt, FaHotel, FaTimes } from "react-icons/fa";
 import styles from "./ProfilePage.module.scss";
 import { useProfileStore } from "../../stores/profileStore";
 import ManageVenuesContent from "../../components/manage-venues/ManageVenuesContent";
+import ReceivedBookings from "../../components/received-bookings/ReceivedBookings";
 
 const ProfilePage: React.FC = () => {
   const location = useLocation();
@@ -16,6 +17,10 @@ const ProfilePage: React.FC = () => {
     toggleVenueManager,
     successMessage,
     clearMessage,
+    venuesWithBookings,
+    receivedBookingsLoading,
+    receivedBookingsError,
+    fetchReceivedBookings,
   } = useProfileStore();
   const [activeTab, setActiveTab] = useState("myVenues"); // Set initial venue manager status in localStorage on load
 
@@ -52,7 +57,14 @@ const ProfilePage: React.FC = () => {
       "localStorage isVenueManager value:",
       localStorage.getItem("isVenueManager")
     );
-  }, [fetchProfile]); // Update localStorage when isVenueManager changes
+  }, [fetchProfile]);
+
+  // Fetch received bookings when component mounts if user is a venue manager
+  useEffect(() => {
+    if (isVenueManager) {
+      fetchReceivedBookings();
+    }
+  }, [isVenueManager, fetchReceivedBookings]); // Update localStorage when isVenueManager changes
   useEffect(() => {
     // This ensures the HeaderNav component can check if user is a venue manager
     const currentStatus = String(!!isVenueManager);
@@ -231,14 +243,22 @@ const ProfilePage: React.FC = () => {
             >
               Next Trip
             </div>
-            <div
-              className={`${styles.tab} ${
-                activeTab === "receivedBookings" ? styles.active : ""
-              }`}
-              onClick={() => setActiveTab("receivedBookings")}
-            >
-              Received Bookings
-            </div>
+            {isVenueManager && (
+              <div
+                className={`${styles.tab} ${
+                  activeTab === "receivedBookings" ? styles.active : ""
+                }`}
+                onClick={() => {
+                  setActiveTab("receivedBookings");
+                  // Refresh received bookings when switching to this tab
+                  if (isVenueManager) {
+                    fetchReceivedBookings();
+                  }
+                }}
+              >
+                Received Bookings
+              </div>
+            )}
             {isVenueManager && (
               <div
                 className={`${styles.tab} ${
@@ -263,9 +283,19 @@ const ProfilePage: React.FC = () => {
             {activeTab === "nextTrip" && (
               <div className={styles.tripContent}>Next Trip Content</div>
             )}
-            {activeTab === "receivedBookings" && (
-              <div className={styles.bookingsList}>
-                Received Bookings Content
+            {activeTab === "receivedBookings" && isVenueManager && (
+              <ReceivedBookings
+                venuesWithBookings={venuesWithBookings}
+                loading={receivedBookingsLoading}
+                error={receivedBookingsError}
+              />
+            )}
+            {activeTab === "receivedBookings" && !isVenueManager && (
+              <div className={styles.contentSection}>
+                <div className={styles.emptyState}>
+                  <h3>Venue Manager Required</h3>
+                  <p>You need to become a venue manager to receive bookings.</p>
+                </div>
               </div>
             )}
             {activeTab === "manageVenues" && <ManageVenuesContent />}

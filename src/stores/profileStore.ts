@@ -1,5 +1,9 @@
 import { create } from "zustand";
-import { API_PROFILE, API_PROFILE_UPDATE } from "../api/constants";
+import {
+  API_PROFILE,
+  API_PROFILE_UPDATE,
+  API_PROFILE_VENUES,
+} from "../api/constants";
 import { headers } from "../api/headers";
 
 interface Profile {
@@ -11,13 +15,54 @@ interface Profile {
   banner?: string; // Optional banner URL
 }
 
+interface Customer {
+  name: string;
+  email: string;
+  avatar?: {
+    url: string;
+    alt: string;
+  };
+}
+
+interface Venue {
+  id: string;
+  name: string;
+  location: {
+    address?: string;
+    city?: string;
+    country?: string;
+  };
+  media: Array<{
+    url: string;
+    alt: string;
+  }>;
+}
+
+interface Booking {
+  id: string;
+  dateFrom: string;
+  dateTo: string;
+  guests: number;
+  created: string;
+  customer: Customer;
+}
+
+interface VenueWithBookings {
+  venue: Venue;
+  bookings: Booking[];
+}
+
 interface ProfileState {
   profile: Profile;
   isVenueManager: boolean;
+  venuesWithBookings: VenueWithBookings[];
+  receivedBookingsLoading: boolean;
+  receivedBookingsError: string;
   loading: boolean;
   error: string;
   successMessage: string;
   fetchProfile: () => Promise<void>;
+  fetchReceivedBookings: () => Promise<void>;
   toggleVenueManager: () => Promise<void>;
   clearMessage: () => void;
 }
@@ -25,6 +70,9 @@ interface ProfileState {
 export const useProfileStore = create<ProfileState>((set, get) => ({
   profile: { id: "", name: "", email: "", bio: "", avatar: "", banner: "" },
   isVenueManager: false,
+  venuesWithBookings: [],
+  receivedBookingsLoading: false,
+  receivedBookingsError: "",
   loading: false,
   error: "",
   successMessage: "",
@@ -71,6 +119,62 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
       set({ error: err.message });
     } finally {
       set({ loading: false });
+    }
+  },
+  fetchReceivedBookings: async () => {
+    const username = localStorage.getItem("userName");
+    if (!username) {
+      set({ receivedBookingsError: "No user found. Please log in." });
+      return;
+    }
+
+    set({ receivedBookingsLoading: true, receivedBookingsError: "" });
+    try {
+      console.log("Fetching venues with bookings for username:", username);
+
+      const apiUrl = `${API_PROFILE_VENUES(username)}?_bookings=true`;
+      console.log("API URL:", apiUrl);
+      console.log("Headers:", headers());
+
+      // Fetch user's venues with bookings included
+      const res = await fetch(apiUrl, {
+        headers: headers(),
+      });
+
+      if (!res.ok) {
+        const responseText = await res.text();
+        console.error("API Error:", res.status, responseText);
+        throw new Error(
+          `Error ${res.status}: ${responseText || "Unknown error"}`
+        );
+      }
+
+      const { data } = await res.json();
+      console.log("Venues with bookings data received:", data);
+
+      // Transform the data to match our interface
+      const venuesWithBookings: VenueWithBookings[] = data.map(
+        (venue: any) => ({
+          venue: {
+            id: venue.id,
+            name: venue.name,
+            location: venue.location || {},
+            media: venue.media || [],
+          },
+          bookings: venue.bookings || [],
+        })
+      );
+
+      set({
+        venuesWithBookings,
+        receivedBookingsLoading: false,
+      });
+    } catch (err: any) {
+      console.error("Fetch received bookings error:", err);
+      set({
+        receivedBookingsError: err.message,
+        receivedBookingsLoading: false,
+      });
     }
   },
   toggleVenueManager: async () => {
