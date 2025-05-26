@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import styles from "./BookingPage.module.scss";
 import { Booking } from "../../types/Booking";
 import BookingItem from "../../components/bookings/BookingItem";
@@ -13,6 +14,7 @@ const BookingPage: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -25,7 +27,8 @@ const BookingPage: React.FC = () => {
         const username = localStorage.getItem("userName");
 
         if (!token || !username) {
-          throw new Error("User not authenticated");
+          setIsAuthenticated(false);
+          return;
         }
 
         // Fetch bookings with embedded venue details
@@ -56,31 +59,34 @@ const BookingPage: React.FC = () => {
 
     fetchBookings();
   }, []);
-
   return (
     <div className={styles["bookings-page"]}>
       <div className="container">
         <h1>Your Bookings</h1>
-
         {loading && (
           <div className={styles["bookings-message"]}>
             <p>Loading your bookings...</p>
           </div>
+        )}{" "}
+        {!isAuthenticated && (
+          <div className={styles["bookings-message"]}>
+            <p>You need to log in to view your bookings.</p>
+            <Link to="/login" className={styles["login-link"]}>
+              Go to Login Page
+            </Link>
+          </div>
         )}
-
-        {error && (
+        {error && isAuthenticated && (
           <div className={styles["bookings-error"]}>
             <p>Error: {error}</p>
           </div>
         )}
-
-        {!loading && !error && bookings.length === 0 && (
+        {!loading && !error && isAuthenticated && bookings.length === 0 && (
           <div className={styles["bookings-message"]}>
             <p>You have no upcoming bookings.</p>
           </div>
         )}
-
-        {!loading && !error && bookings.length > 0 && (
+        {!loading && !error && isAuthenticated && bookings.length > 0 && (
           <ul className={styles["bookings-list"]}>
             {bookings.map((booking) => (
               <BookingItem key={booking.id} booking={booking} />
