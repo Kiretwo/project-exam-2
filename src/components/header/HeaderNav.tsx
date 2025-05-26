@@ -15,7 +15,7 @@ const Navbar: React.FC = () => {
     // Check if user is a venue manager from localStorage and update immediately
     const userIsVenueManager =
       localStorage.getItem("isVenueManager") === "true";
-/*     console.log(
+    /*     console.log(
       "HeaderNav: userName =",
       name,
       "isVenueManager =",
@@ -59,15 +59,16 @@ const Navbar: React.FC = () => {
     <nav className={styles.navbar}>
       <div className={styles["navbar-brand"]}>
         <Link to="/">Holidaze</Link>
-      </div>
-
+      </div>{" "}
       <div className={styles.navbarActions}>
+        {" "}
         {isLoggedIn && isVenueManager && (
-          <Link to="/create-venue" className={styles["create-venue-btn"]}>
-            <FaPlus /> Create venue
-          </Link>
+          <div className={styles["venue-manager-actions"]}>
+            <Link to="/create-venue" className={styles["create-venue-btn"]}>
+              <FaPlus /> Create venue
+            </Link>
+          </div>
         )}
-
         <ul className={styles["navbar-links"]}>
           <li>
             <Link to="/search">Search</Link>

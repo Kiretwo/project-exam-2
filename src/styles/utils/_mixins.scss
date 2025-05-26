@@ -23,7 +23,7 @@
 }
 
 // Button Mixin
-@mixin button($bg: vars.$primary-color, $color: vars.$text-color) {
+@mixin button($bg: vars.$secondary-color, $color: vars.$text-color) {
   background-color: $bg;
   color: $color;
   padding: 12px 20px;
