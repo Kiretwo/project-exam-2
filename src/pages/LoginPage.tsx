@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LoginForm from "../components/auth/login/LoginForm";
+import SuccessMessage from "../components/success-message/SuccessMessage";
 // Import interfaces and functions from the API module
 import {
   loginUser,
@@ -13,6 +14,7 @@ import {
 const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showSuccess, setShowSuccess] = useState(false);
   const navigate = useNavigate();
 
   // Use the LoginCredentials type for credentials
@@ -37,10 +39,13 @@ const LoginPage: React.FC = () => {
           localStorage.setItem("isVenueManager", "false");
           console.log("User is not a venue manager, setting localStorage");
         }
-
         console.log("Logged in user:", response.data);
-        alert("Login successful!"); // Replace with actual success handling later
-        navigate("/profile"); // Redirect to profile page or dashboard
+        setShowSuccess(true);
+
+        // Navigate after a delay to show the success message
+        setTimeout(() => {
+          navigate("/profile");
+        }, 2000);
       } else {
         throw new Error("Login failed: No access token received.");
       }
@@ -51,11 +56,14 @@ const LoginPage: React.FC = () => {
       setLoading(false);
     }
   };
-
   return (
     <div>
       {/* Add a page-specific layout or heading here if needed */}
       <LoginForm onLogin={handleLogin} loading={loading} error={error} />
+
+      {showSuccess && (
+        <SuccessMessage message="Login successful! Redirecting to your profile..." />
+      )}
     </div>
   );
 };

@@ -97,14 +97,41 @@ const ProfilePage: React.FC = () => {
   }
 
   if (error) {
+    const isAuthError =
+      error.includes("No user found") || error.includes("log in");
+
     return (
       <div className={styles["profile-page"]}>
         <div className={styles.profileHero}>
           <div className={styles.bannerPlaceholder}></div>
           <div className="container">
-            <p className={styles.error}>{error}</p>
+            <p className={styles.error}>
+              {isAuthError ? "Authentication required" : error}
+            </p>
           </div>
         </div>
+
+        {/* Content area for authentication prompt */}
+        {isAuthError && (
+          <div className={styles.contentWrapper}>
+            <div className="container">
+              <div className={styles.authPrompt}>
+                <h2>You need to log in to view your profile</h2>
+                <div className={styles.authLinks}>
+                  <Link to="/login" className={styles.loginBtn}>
+                    Log In
+                  </Link>
+                  <p className={styles.registerPrompt}>
+                    Don't have an account?{" "}
+                    <Link to="/register" className={styles.registerLink}>
+                      Register here
+                    </Link>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }

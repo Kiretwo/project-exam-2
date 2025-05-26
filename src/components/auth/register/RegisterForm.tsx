@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent } from "react"; // Added ChangeEvent, FormEvent
+import { Link } from "react-router-dom";
 import styles from "./RegisterForm.module.scss";
 
 // Define the shape of the data for step 1
@@ -12,6 +13,7 @@ interface RegisterFormProps {
   onStep1Submit: (data: RegisterStep1Data) => void;
   loading: boolean;
   error: string | null; // This is for API errors, we'll add local form errors
+  initialValues?: RegisterStep1Data; // Optional initial values for preserving data
 }
 
 // Define a type for our form errors
@@ -27,10 +29,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
   onStep1Submit,
   loading,
   error: apiError, // Renamed to avoid conflict with local errors state
+  initialValues,
 }) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [name, setName] = useState(initialValues?.name || "");
+  const [email, setEmail] = useState(initialValues?.email || "");
+  const [password, setPassword] = useState(initialValues?.password || "");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [formErrors, setFormErrors] = useState<FormErrors>({});
 
@@ -117,7 +120,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
       {formErrors.general && (
         <p className={styles.errorMessageItem}>{formErrors.general}</p>
       )}
-
       <div className={styles.formGroup}>
         <label htmlFor="name">Name*</label>
         <input
@@ -136,7 +138,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
           </p>
         )}
       </div>
-
       <div className={styles.formGroup}>
         <label htmlFor="email">Email*</label>
         <input
@@ -155,7 +156,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
           </p>
         )}
       </div>
-
       <div className={styles.formGroup}>
         <label htmlFor="password">Password*</label>
         <input
@@ -174,7 +174,6 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
           </p>
         )}
       </div>
-
       <div className={styles.formGroup}>
         <label htmlFor="confirmPassword">Confirm Password*</label>
         <input
@@ -194,10 +193,18 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
             {formErrors.confirmPassword}
           </p>
         )}
-      </div>
+      </div>{" "}
       <button type="submit" disabled={loading} className={styles.submitButton}>
         {loading ? "Processing..." : "Next Step"}
       </button>
+      <div className={styles.authPrompt}>
+        <p>
+          Already have an account?{" "}
+          <Link to="/login" className={styles.authLink}>
+            Login here
+          </Link>
+        </p>
+      </div>
     </form>
   );
 };

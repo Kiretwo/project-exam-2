@@ -3,11 +3,13 @@ import styles from "./VenueManagerPrompt.module.scss";
 
 interface VenueManagerPromptProps {
   onSelection: (isVenueManager: boolean) => void;
+  onGoBack: () => void;
   loading: boolean;
 }
 
 const VenueManagerPrompt: React.FC<VenueManagerPromptProps> = ({
   onSelection,
+  onGoBack,
   loading,
 }) => {
   return (
@@ -29,6 +31,16 @@ const VenueManagerPrompt: React.FC<VenueManagerPromptProps> = ({
           className={`${styles.button} ${styles.noButton}`}
         >
           No, Continue as Customer
+        </button>
+      </div>
+
+      <div className={styles.backLink}>
+        <button
+          onClick={onGoBack}
+          disabled={loading}
+          className={styles.goBackButton}
+        >
+          ← Go back to edit registration details
         </button>
       </div>
     </div>

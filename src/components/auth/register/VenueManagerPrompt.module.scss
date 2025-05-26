@@ -6,18 +6,17 @@
   max-width: 500px;
   margin: 2rem auto;
   padding: 2rem;
-  border: 1px solid vars.$light-gray;
   border-radius: 8px;
-  background-color: vars.$background-color;
+  background-color: vars.$primary-color;
   text-align: center;
 
   h2 {
-    color: vars.$text-color;
+    color: vars.$secondary-text-color;
     margin-bottom: 0.5rem;
   }
 
   p {
-    color: vars.$secondary-color;
+    color: vars.$secondary-text-color;
     line-height: 1.6;
   }
 }
@@ -52,6 +51,32 @@
 }
 
 .noButton {
-  background-color: vars.$primary-color;
+  background-color: vars.$secondary-color;
   color: white;
+}
+
+.backLink {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(vars.$secondary-text-color, 0.2);
+}
+
+.goBackButton {
+  background: none;
+  border: none;
+  color: vars.$secondary-text-color;
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover:not(:disabled) {
+    background-color: rgba(vars.$secondary-text-color, 0.1);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
