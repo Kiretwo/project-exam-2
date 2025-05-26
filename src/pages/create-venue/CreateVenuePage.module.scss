@@ -32,6 +32,12 @@
   border: 1px solid rgba(vars.$success-color, 0.3);
 }
 
+.back-btn,
+.delete-btn {
+  margin-right: 1.3rem;
+  margin-bottom: 1.5rem;
+}
+
 .form {
   display: flex;
   flex-direction: column;

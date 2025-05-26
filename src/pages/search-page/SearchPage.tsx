@@ -10,7 +10,6 @@ const SearchPage: React.FC = () => {
   const [venues, setVenues] = useState<Venue[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [hasSearched, setHasSearched] = useState(false);
 
   // Load initial venues when component mounts
   useEffect(() => {
@@ -50,9 +49,8 @@ const SearchPage: React.FC = () => {
 
   const onSearch = async ({ location }: BookingParams) => {
     setLoading(true);
+    setLoading(true);
     setError(null);
-    setHasSearched(true);
-
     try {
       const baseUrl = import.meta.env.VITE_NOROFF_API_BASE_URL;
       const apiKey = import.meta.env.VITE_API_KEY;
