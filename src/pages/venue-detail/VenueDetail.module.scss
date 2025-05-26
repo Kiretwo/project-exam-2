@@ -82,14 +82,16 @@
   color: vars.$secondary-color;
 }
 
-
 .price {
   font-weight: bold;
-  color: vars.$secondary-color;
+  color: vars.$text-color;
 }
 
 .rating {
-  color: vars.$warning-color;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: vars.$secondary-color;
 }
 
 .description {
@@ -109,4 +111,28 @@
 
 .error {
   color: vars.$danger-color;
+}
+
+.owner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0.5rem 0;
+}
+
+.ownerAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid vars.$light-gray;
+}
+
+.ownerText {
+  font-size: 1rem;
+  color: vars.$text-color;
+}
+
+.ownerText strong {
+  color: vars.$secondary-color;
 }

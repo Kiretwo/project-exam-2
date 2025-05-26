@@ -5,14 +5,13 @@
   max-width: 450px;
   margin: 2rem auto; // Center the form on the page
   padding: 2rem;
-  border: 1px solid vars.$light-gray;
   border-radius: 8px;
-  background-color: vars.$background-color;
+  background-color: vars.$primary-color;
 
   h2 {
     text-align: center;
     margin-bottom: 1.5rem;
-    color: vars.$text-color;
+    color: vars.$secondary-text-color;
   }
 }
 
@@ -20,12 +19,10 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem; // Space between label and input
-
   label {
     font-weight: bold;
-    color: vars.$text-color;
+    color: vars.$secondary-text-color;
   }
-
   input[type="text"],
   input[type="email"],
   input[type="password"],
@@ -35,26 +32,25 @@
     border: 1px solid vars.$light-gray;
     border-radius: 4px;
     font-size: 1rem;
-    background-color: vars.$background-color;
-    color: vars.$text-color;
-
+    background-color: white;
+    color: #333;
     &:focus {
       outline: none;
       border-color: vars.$primary-color; // Highlight with primary color on focus
       box-shadow: 0 0 0 2px rgba(vars.$primary-color, 0.2); // Soft glow effect
+      background-color: white; // Ensure white background is maintained
+      color: #333; // Ensure text color is maintained
     }
-
     &.inputError {
       // Style for invalid input
       border-color: vars.$danger-color; // Red border for error
-      background-color: rgba(
-        vars.$danger-color,
-        0.05
-      ); // Optional: very light red background
+      background-color: white; // Keep white background even for errors
+      color: #333; // Ensure text remains dark
 
       &:focus {
         border-color: vars.$danger-color;
         box-shadow: 0 0 0 2px rgba(vars.$danger-color, 0.2);
+        background-color: white; // Ensure white background on focus too
       }
     }
 
@@ -70,8 +66,8 @@
 
 .submitButton {
   padding: 0.85rem;
-  background-color: vars.$primary-color;
-  color: white;
+  background-color: vars.$secondary-color;
+  color: vars.$secondary-text-color;
   border: none;
   border-radius: 4px;
   font-size: 1.1rem;
@@ -88,5 +84,34 @@
     background-color: vars.$secondary-color;
     cursor: not-allowed;
     opacity: 0.7;
+  }
+}
+
+.authPrompt {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid vars.$light-gray;
+  p {
+    margin: 0;
+    color: vars.$secondary-text-color;
+    font-size: 0.9rem;
+  }
+}
+
+.authLink {
+  color: vars.$secondary-text-color;
+  font-weight: 500;
+  transition: color 0.2s ease-in-out;
+
+  &:hover {
+    color: darken(vars.$secondary-text-color, 10%);
+    text-decoration: underline;
+  }
+
+  &:focus {
+    outline: 2px solid vars.$secondary-text-color;
+    outline-offset: 2px;
+    border-radius: 2px;
   }
 }

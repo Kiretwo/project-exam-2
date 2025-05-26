@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent, FormEvent } from "react"; // Added ChangeEvent, FormEvent
+import { Link } from "react-router-dom";
 import styles from "./RegisterForm.module.scss";
 
 // Define the shape of the data for step 1
@@ -12,6 +13,7 @@ interface RegisterFormProps {
   onStep1Submit: (data: RegisterStep1Data) => void;
   loading: boolean;
   error: string | null; // This is for API errors, we'll add local form errors
+  initialValues?: RegisterStep1Data; // Optional initial values for preserving data
 }
 
 // Define a type for our form errors
@@ -27,10 +29,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
   onStep1Submit,
   loading,
   error: apiError, // Renamed to avoid conflict with local errors state
+  initialValues,
 }) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [name, setName] = useState(initialValues?.name || "");
+  const [email, setEmail] = useState(initialValues?.email || "");
+  const [password, setPassword] = useState(initialValues?.password || "");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [formErrors, setFormErrors] = useState<FormErrors>({});
 
@@ -107,25 +110,24 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
 
     onStep1Submit({ name, email, password });
   };
-
   return (
-    <form onSubmit={handleSubmit} className={styles.registerForm}>
+    <form onSubmit={handleSubmit} className={styles.registerForm} noValidate>
       <h2>Register - Step 1 of 2</h2>
       {/* Display API error if it exists */}
       {apiError && <p className={styles.errorMessageItem}>{apiError}</p>}
       {/* Display general form error if it exists */}
       {formErrors.general && (
         <p className={styles.errorMessageItem}>{formErrors.general}</p>
-      )}
-
+      )}{" "}
       <div className={styles.formGroup}>
         <label htmlFor="name">Name*</label>
         <input
           type="text"
           id="name"
-          name="name" // Added name attribute for validation
+          name="name"
           value={name}
           onChange={(e) => handleInputChange(e, setName)}
+          autoComplete="username"
           className={formErrors.name ? styles.inputError : ""}
           aria-invalid={!!formErrors.name}
           aria-describedby={formErrors.name ? "name-error" : undefined}
@@ -135,16 +137,16 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
             {formErrors.name}
           </p>
         )}
-      </div>
-
+      </div>{" "}
       <div className={styles.formGroup}>
         <label htmlFor="email">Email*</label>
         <input
           type="email"
           id="email"
-          name="email" // Added name attribute
+          name="email"
           value={email}
           onChange={(e) => handleInputChange(e, setEmail)}
+          autoComplete="email"
           className={formErrors.email ? styles.inputError : ""}
           aria-invalid={!!formErrors.email}
           aria-describedby={formErrors.email ? "email-error" : undefined}
@@ -154,16 +156,16 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
             {formErrors.email}
           </p>
         )}
-      </div>
-
+      </div>{" "}
       <div className={styles.formGroup}>
         <label htmlFor="password">Password*</label>
         <input
           type="password"
           id="password"
-          name="password" // Added name attribute
+          name="password"
           value={password}
           onChange={(e) => handleInputChange(e, setPassword)}
+          autoComplete="new-password"
           className={formErrors.password ? styles.inputError : ""}
           aria-invalid={!!formErrors.password}
           aria-describedby={formErrors.password ? "password-error" : undefined}
@@ -173,16 +175,16 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
             {formErrors.password}
           </p>
         )}
-      </div>
-
+      </div>{" "}
       <div className={styles.formGroup}>
         <label htmlFor="confirmPassword">Confirm Password*</label>
         <input
           type="password"
           id="confirmPassword"
-          name="confirmPassword" // Added name attribute
+          name="confirmPassword"
           value={confirmPassword}
           onChange={(e) => handleInputChange(e, setConfirmPassword)}
+          autoComplete="new-password"
           className={formErrors.confirmPassword ? styles.inputError : ""}
           aria-invalid={!!formErrors.confirmPassword}
           aria-describedby={
@@ -194,10 +196,18 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
             {formErrors.confirmPassword}
           </p>
         )}
-      </div>
+      </div>{" "}
       <button type="submit" disabled={loading} className={styles.submitButton}>
         {loading ? "Processing..." : "Next Step"}
       </button>
+      <div className={styles.authPrompt}>
+        <p>
+          Already have an account?{" "}
+          <Link to="/login" className={styles.authLink}>
+            Login here
+          </Link>
+        </p>
+      </div>
     </form>
   );
 };

@@ -4,6 +4,7 @@ import RegisterForm, {
   RegisterStep1Data,
 } from "../components/auth/register/RegisterForm";
 import VenueManagerPrompt from "../components/auth/register/VenueManagerPrompt";
+import SuccessMessage from "../components/success-message/SuccessMessage";
 import { registerUser, UserRegistrationData } from "../api/auth/register";
 
 const RegisterPage: React.FC = () => {
@@ -11,6 +12,7 @@ const RegisterPage: React.FC = () => {
   const [step1Data, setStep1Data] = useState<RegisterStep1Data | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showSuccess, setShowSuccess] = useState(false);
   const navigate = useNavigate();
 
   const handleStep1Submit = (data: RegisterStep1Data) => {
@@ -19,7 +21,6 @@ const RegisterPage: React.FC = () => {
     setCurrentStep(2);
     setError(null); // Clear previous errors
   };
-
   const handleVenueManagerSelection = async (isVenueManager: boolean) => {
     if (!step1Data) {
       setError("Registration data is missing. Please start over.");
@@ -37,12 +38,15 @@ const RegisterPage: React.FC = () => {
 
     setLoading(true);
     setError(null);
-
     try {
       const response = await registerUser(finalRegistrationData);
       console.log("Registered user:", response.data);
-      alert("Registration successful! Please log in.");
-      navigate("/login");
+      setShowSuccess(true);
+
+      // Navigate after a delay to show the success message
+      setTimeout(() => {
+        navigate("/login");
+      }, 2500);
     } catch (err: any) {
       console.error("Registration error:", err);
       // Check for the specific "Profile already exists" error message
@@ -60,6 +64,10 @@ const RegisterPage: React.FC = () => {
     }
   };
 
+  const handleGoBackToStep1 = () => {
+    setCurrentStep(1);
+    setError(null); // Clear any errors
+  };
   return (
     <div>
       {currentStep === 1 && (
@@ -67,15 +75,19 @@ const RegisterPage: React.FC = () => {
           onStep1Submit={handleStep1Submit}
           loading={loading}
           error={error}
+          initialValues={step1Data || undefined}
         />
       )}
       {currentStep === 2 && (
         <VenueManagerPrompt
           onSelection={handleVenueManagerSelection}
+          onGoBack={handleGoBackToStep1}
           loading={loading}
         />
       )}
-      {/* Add a button to go back to step 1 if needed */}
+      {showSuccess && (
+        <SuccessMessage message="Registration successful! Redirecting to login page..." />
+      )}
     </div>
   );
 };

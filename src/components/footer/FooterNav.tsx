@@ -1,30 +1,22 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { FaHome, FaSearch, FaCalendarAlt, FaUser } from "react-icons/fa";
+import { FaSearch, FaCalendarAlt, FaUser } from "react-icons/fa";
 import styles from "./FooterNav.module.scss";
 
 const Footer: React.FC = () => {
   return (
     <footer className={styles["footer-nav"]}>
       <nav>
+        {" "}
         <ul>
           <li>
             <NavLink
               to="/"
               end
               className={({ isActive }) =>
-                `${styles.link} ${styles["home-btn"]} ${isActive ? styles.active : ""}`
-              }
-            >
-              <FaHome className={`${styles.icon} ${styles["icon-home"]}`} />
-              <span className={styles.label}>Home</span>
-            </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/search"
-              className={({ isActive }) =>
-                `${styles.link} ${isActive ? styles.active : ""}`
+                `${styles.link} ${styles["home-btn"]} ${
+                  isActive ? styles.active : ""
+                }`
               }
             >
               <FaSearch className={styles.icon} />

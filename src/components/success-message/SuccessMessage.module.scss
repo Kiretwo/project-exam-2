@@ -1,0 +1,15 @@
+.successMessage {
+  color: vars.$success-color;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  background-color: rgba(vars.$success-color, 0.05);
+  border: 1px solid rgba(vars.$success-color, 0.2);
+  border-radius: 4px;
+  padding: 0.75rem;
+
+  p {
+    margin: 0;
+    font-weight: 500;
+  }
+}

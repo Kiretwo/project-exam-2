@@ -1,0 +1,555 @@
+@use "sass:color";
+
+.profile-page {
+  background-color: #fff;
+  min-height: calc(100vh - 60px);
+
+  // Profile hero section with blue background that stretches across the entire width
+  .profileHero {
+    // stretch beyond the usual padding:
+    width: calc(
+      100% + 4rem
+    ); // compensate for .main-content's 2rem padding each side
+    margin: -1rem -2rem 0; // pull it out to the edges, no bottom margin
+    background: vars.$primary-color;
+    padding: 2rem 2rem 0; // padding top and sides, remove bottom padding
+    min-height: auto; // Allow height to be determined by content
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box; // Ensure padding is included in the width
+
+    // Banner inside the hero - now part of the blue section
+    .banner {
+      width: 100%;
+      height: 180px;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      position: relative;
+      max-width: 1200px;
+      border-radius: 8px;
+
+      // Semi-transparent overlay to darken the image
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.2);
+        z-index: 1;
+      }
+    }
+
+    // Placeholder when no banner is present
+    .bannerPlaceholder {
+      width: 100%;
+      height: 100px; // slightly smaller when no image
+      background-color: vars.$primary-color;
+      margin-bottom: 1.5rem;
+      max-width: 1200px;
+      border-radius: 8px;
+    }
+
+    // Success message styling when inside the hero
+    .success {
+      background-color: vars.$success-color;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      margin: 0 0 1rem;
+      text-align: center;
+      z-index: 10;
+      width: 100%;
+      max-width: 1200px; // match container width
+      font-size: 0.9rem;
+    }
+
+    // Container needs to be larger to ensure proper spacing
+    .container {
+      padding: 0 2rem;
+      width: 100%;
+      max-width: 1200px;
+    }
+  }
+
+  /* Success message outside the hero */
+  /* This styling is now redundant since we're showing success messages inside the hero
+  .success {
+    background-color: rgba(vars.$success-color, 0.1);
+    color: vars.$success-color;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+    text-align: center;
+    z-index: 10;
+    width: 100%;
+    font-size: 0.9rem;
+  }
+  */
+
+  .error {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+    text-align: center;
+  }
+
+  .authPrompt {
+    text-align: center;
+    padding: 4rem 1rem;
+    color: vars.$text-color;
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      font-weight: 600;
+      color: vars.$text-color;
+    }
+
+    .authLinks {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+
+      .loginBtn {
+        display: inline-block;
+        padding: 0.875rem 2rem;
+        background-color: vars.$secondary-color;
+        color: white;
+        text-decoration: none;
+        border-radius: 0.375rem;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: background-color 0.2s ease, transform 0.2s ease;
+
+        &:hover {
+          background-color: color.adjust(
+            vars.$secondary-color,
+            $lightness: -10%
+          );
+          text-decoration: none;
+          transform: translateY(-1px);
+        }
+
+        &:focus {
+          outline: 2px solid vars.$secondary-color;
+          outline-offset: 2px;
+        }
+      }
+
+      .registerPrompt {
+        margin: 0;
+        font-size: 0.95rem;
+        color: vars.$dark-gray;
+
+        .registerLink {
+          color: vars.$secondary-color;
+          text-decoration: underline;
+          font-weight: 500;
+          transition: opacity 0.2s ease;
+
+          &:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+          }
+
+          &:focus {
+            outline: 1px solid vars.$secondary-color;
+            outline-offset: 2px;
+          }
+        }
+      }
+    }
+  }
+
+  // Loading state styles
+  .loadingState {
+    padding: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    .loadingAvatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.2);
+      animation: pulse 1.5s infinite;
+    }
+
+    .loadingText {
+      height: 1rem;
+      width: 60%;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      animation: pulse 1.5s infinite;
+
+      &:nth-child(2) {
+        width: 40%;
+      }
+    }
+  }
+
+  @keyframes pulse {
+    0% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 0.3;
+    }
+    100% {
+      opacity: 0.6;
+    }
+  }
+
+  .header {
+    padding: 0.5rem 0 1rem;
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    width: 100%;
+
+    // Updated colors for header inside the blue hero
+    .name {
+      color: white;
+      margin-top: 0.25rem;
+    }
+
+    .email,
+    .bio {
+      color: rgba(255, 255, 255, 0.8);
+    }
+  }
+
+  .avatarContainer {
+    margin-right: 1.5rem;
+    @include mixins.respond(small) {
+      margin-right: 0.5rem;
+    }
+  }
+
+  .avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .info {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    .headerButtons {
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .name {
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    .email {
+      font-size: 0.9rem;
+      color: vars.$secondary-text-color;
+      margin: 0.1rem 0 0;
+      font-style: italic;
+    }
+
+    .bio {
+      margin: 0.6rem 0 0;
+      color: vars.$secondary-text-color;
+      font-size: 0.9rem;
+    }
+
+    .logout {
+      font-family: vars.$font-primary;
+      font-weight: 700;
+      background-color: white;
+      border: none;
+      border-radius: 17px;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+      color: vars.$danger-color;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      cursor: pointer;
+
+      &:hover {
+        background-color: darken(white, 10%);
+      }
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 0.75rem;
+      min-width: 200px; // Prevent layout shift between edit and save modes
+      justify-content: flex-start;
+    }
+  }
+
+  .actionBtn {
+    padding: 0.45rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .editBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: vars.$secondary-color;
+    color: vars.$secondary-text-color;
+    border: 1px solid vars.$secondary-color;
+    min-width: 140px; // Consistent width to prevent layout shift
+
+    &:hover {
+      background-color: lighten(vars.$secondary-color, 5%);
+    }
+  }
+
+  .venueBtn {
+    background-color: vars.$secondary-color;
+    color: vars.$secondary-text-color;
+    border: none;
+    transition: background-color 0.2s;
+    min-width: 180px; // Ensure button maintains consistent width
+
+    &.active {
+      background-color: vars.$secondary-color;
+
+      // Show default text by default
+      .defaultText {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        justify-content: center;
+        width: 100%;
+      }
+
+      .hoverText {
+        display: none;
+        align-items: center;
+        gap: 0.25rem;
+        justify-content: center;
+        width: 100%;
+      }
+
+      // Show 'Remove?' text only on hover
+      &:hover {
+        background-color: vars.$danger-color;
+
+        .defaultText {
+          display: none;
+        }
+
+        .hoverText {
+          display: flex;
+        }
+      }
+    }
+
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  .navTabs {
+    background-color: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    margin-top: 2rem;
+    width: 100%;
+    max-width: 1200px;
+    padding-bottom: 0.5rem; // Add padding at the bottom of the tabs
+
+    .tabsContainer {
+      display: flex;
+      width: 100%;
+      justify-content: flex-start;
+      gap: 1.3rem;
+    }
+
+    .tab {
+      padding: 0.5rem 0;
+      color: rgba(255, 255, 255, 0.7);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-align: center;
+      transition: all 0.2s ease;
+
+      &.active {
+        color: white;
+        border-color: vars.$secondary-color;
+      }
+
+      &:hover:not(.active) {
+        color: white;
+      }
+    }
+  }
+
+  .contentSection {
+    padding: 2rem 0;
+    min-height: 300px;
+  }
+
+  .venuesList,
+  .tripContent,
+  .bookingsList,
+  .manageContent {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    // Placeholder styling
+    color: vars.$dark-gray; // Updated for white background
+    font-size: 1rem;
+    padding: 2rem 0;
+    text-align: center;
+  }
+
+  // Edit mode styles
+  .editBanner {
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 1.5rem;
+    position: relative;
+
+    .editOverlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      border: none;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      transition: background-color 0.2s;
+      z-index: 2;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+
+      svg {
+        font-size: 1.5rem;
+      }
+    }
+  }
+
+  .editAvatarContainer {
+    position: relative;
+    margin-right: 1.5rem;
+    @include mixins.respond(small) {
+      margin-right: 0.5rem;
+    }
+
+    .editAvatarOverlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      transition: background-color 0.2s;
+      z-index: 2;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+    }
+  }
+
+  .editBio {
+    margin: 0.4rem 0 0;
+
+    .bioInput {
+      width: 100%;
+      padding: 0.5rem;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 4px;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 0.9rem;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 60px;
+      box-sizing: border-box;
+
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      &:focus {
+        outline: none;
+        border-color: rgba(255, 255, 255, 0.5);
+        background-color: rgba(255, 255, 255, 0.15);
+      }
+    }
+  }
+
+  .saveBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: vars.$success-color;
+    color: vars.$secondary-text-color;
+    border: none;
+    min-width: 140px; // Consistent width to prevent layout shift
+
+    &:hover:not(:disabled) {
+      background-color: color.adjust(vars.$success-color, $lightness: -10%);
+    }
+
+    &:disabled {
+      background-color: vars.$dark-gray;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+}
