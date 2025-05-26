@@ -38,9 +38,8 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, loading, error }) => {
 
     onLogin({ email, password });
   };
-
   return (
-    <form onSubmit={handleSubmit} className={styles.loginForm}>
+    <form onSubmit={handleSubmit} className={styles.loginForm} noValidate>
       <h2>Login</h2>
       {error && <p className={styles.errorMessage}>{error}</p>}{" "}
       <div className={styles.formGroup}>
@@ -48,10 +47,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, loading, error }) => {
         <input
           type="email"
           id="email"
+          name="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
-          autoComplete="email"
+          autoComplete="username"
           className={formErrors.email ? styles.inputError : ""}
           aria-invalid={!!formErrors.email}
           aria-describedby={formErrors.email ? "email-error" : undefined}
@@ -61,15 +60,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin, loading, error }) => {
             {formErrors.email}
           </p>
         )}
-      </div>
+      </div>{" "}
       <div className={styles.formGroup}>
         <label htmlFor="password">Password</label>
         <input
           type="password"
           id="password"
+          name="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
           autoComplete="current-password"
           className={formErrors.password ? styles.inputError : ""}
           aria-invalid={!!formErrors.password}
