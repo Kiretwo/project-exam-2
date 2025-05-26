@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FaUserEdit, FaSignOutAlt, FaHotel, FaTimes } from "react-icons/fa";
 import styles from "./ProfilePage.module.scss";
 import { useProfileStore } from "../../stores/profileStore";
+import ManageVenuesContent from "../../components/manage-venues/ManageVenuesContent";
 
 const ProfilePage: React.FC = () => {
   const {
@@ -16,6 +17,15 @@ const ProfilePage: React.FC = () => {
     clearMessage,
   } = useProfileStore();
   const [activeTab, setActiveTab] = useState("myVenues"); // Set initial venue manager status in localStorage on load
+
+  useEffect(() => {
+    // Check if we should navigate to a specific tab
+    const targetTab = sessionStorage.getItem("profileActiveTab");
+    if (targetTab) {
+      setActiveTab(targetTab);
+      sessionStorage.removeItem("profileActiveTab"); // Clear after using
+    }
+  }, []);
 
   useEffect(() => {
     console.log("ProfilePage mounted, isVenueManager:", isVenueManager);
@@ -133,9 +143,7 @@ const ProfilePage: React.FC = () => {
                 </button>
               </div>
               <h2 className={styles.name}>{profile.name}</h2>
-              <p className={styles.email}>
-                {profile.email}
-              </p>
+              <p className={styles.email}>{profile.email}</p>
               {profile.bio && <p className={styles.bio}>{profile.bio}</p>}
               <div className={styles.actions}>
                 <Link
@@ -225,9 +233,7 @@ const ProfilePage: React.FC = () => {
                 Received Bookings Content
               </div>
             )}
-            {activeTab === "manageVenues" && (
-              <div className={styles.manageContent}>Manage Venues Content</div>
-            )}
+            {activeTab === "manageVenues" && <ManageVenuesContent />}
           </div>
         </div>
       </div>
