@@ -61,10 +61,23 @@ interface ProfileState {
   loading: boolean;
   error: string;
   successMessage: string;
+  // Edit mode state
+  isEditMode: boolean;
+  editProfile: Profile;
+  updateLoading: boolean;
+  showImageModal: boolean;
+  imageModalType: "avatar" | "banner" | null;
   fetchProfile: () => Promise<void>;
   fetchReceivedBookings: () => Promise<void>;
   toggleVenueManager: () => Promise<void>;
   clearMessage: () => void;
+  // Edit mode functions
+  setEditMode: (enabled: boolean) => void;
+  updateEditProfile: (field: keyof Profile, value: string) => void;
+  updateProfile: () => Promise<void>;
+  cancelEdit: () => void;
+  showImageUrlModal: (type: "avatar" | "banner") => void;
+  hideImageModal: () => void;
 }
 
 export const useProfileStore = create<ProfileState>((set, get) => ({
@@ -76,6 +89,13 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
   loading: false,
   error: "",
   successMessage: "",
+  // Edit mode state
+  isEditMode: false,
+  editProfile: { id: "", name: "", email: "", bio: "", avatar: "", banner: "" },
+  updateLoading: false,
+  showImageModal: false,
+  imageModalType: null,
+
   fetchProfile: async () => {
     const username = localStorage.getItem("userName");
     if (!username) {
@@ -266,5 +286,117 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
 
   clearMessage: () => {
     set({ successMessage: "" });
+  },
+
+  setEditMode: (enabled: boolean) => {
+    const { profile } = get();
+    set({
+      isEditMode: enabled,
+      editProfile: enabled ? { ...profile } : profile,
+      error: "",
+      successMessage: "",
+    });
+  },
+
+  updateEditProfile: (field: keyof Profile, value: string) => {
+    const { editProfile } = get();
+    set({
+      editProfile: { ...editProfile, [field]: value },
+    });
+  },
+
+  updateProfile: async () => {
+    const username = localStorage.getItem("userName");
+    if (!username) {
+      set({ error: "No user found. Please log in." });
+      return;
+    }
+
+    set({ updateLoading: true, error: "", successMessage: "" });
+
+    try {
+      const { editProfile } = get();
+
+      // Prepare the update data
+      const updateData = {
+        bio: editProfile.bio,
+        avatar: {
+          url: editProfile.avatar,
+          alt: `${editProfile.name}'s avatar`,
+        },
+        banner: editProfile.banner
+          ? {
+              url: editProfile.banner,
+              alt: `${editProfile.name}'s banner`,
+            }
+          : undefined,
+      };
+
+      console.log("Updating profile with data:", updateData);
+
+      const res = await fetch(API_PROFILE_UPDATE(username), {
+        method: "PUT",
+        headers: headers(),
+        body: JSON.stringify(updateData),
+      });
+
+      if (!res.ok) {
+        const responseText = await res.text();
+        console.error("Profile update error:", res.status, responseText);
+        throw new Error(
+          `Error ${res.status}: ${responseText || "Failed to update profile"}`
+        );
+      }
+
+      const { data } = await res.json();
+      console.log("Profile updated successfully:", data);
+
+      // Update the profile state with the new data
+      set({
+        profile: {
+          id: data.id,
+          name: data.name,
+          email: data.email || "",
+          bio: data.bio || "",
+          avatar:
+            (data.avatar && data.avatar.url) ||
+            "/images/profile-picture-placeholder.jpeg",
+          banner: (data.banner && data.banner.url) || undefined,
+        },
+        isEditMode: false,
+        successMessage: "Profile updated successfully!",
+        updateLoading: false,
+      });
+    } catch (err: any) {
+      console.error("Profile update error:", err);
+      set({
+        error: err.message,
+        updateLoading: false,
+      });
+    }
+  },
+
+  cancelEdit: () => {
+    const { profile } = get();
+    set({
+      isEditMode: false,
+      editProfile: { ...profile },
+      error: "",
+      successMessage: "",
+    });
+  },
+
+  showImageUrlModal: (type: "avatar" | "banner") => {
+    set({
+      showImageModal: true,
+      imageModalType: type,
+    });
+  },
+
+  hideImageModal: () => {
+    set({
+      showImageModal: false,
+      imageModalType: null,
+    });
   },
 }));

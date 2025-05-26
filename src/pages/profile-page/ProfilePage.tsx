@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { FaUserEdit, FaSignOutAlt, FaHotel, FaTimes } from "react-icons/fa";
+import {
+  FaUserEdit,
+  FaSignOutAlt,
+  FaHotel,
+  FaTimes,
+  FaSave,
+  FaCamera,
+} from "react-icons/fa";
 import styles from "./ProfilePage.module.scss";
 import { useProfileStore } from "../../stores/profileStore";
 import ManageVenuesContent from "../../components/manage-venues/ManageVenuesContent";
 import ReceivedBookings from "../../components/received-bookings/ReceivedBookings";
+import ImageUrlModal from "../../components/image-url-modal/ImageUrlModal";
 
 const ProfilePage: React.FC = () => {
   const location = useLocation();
@@ -21,6 +29,17 @@ const ProfilePage: React.FC = () => {
     receivedBookingsLoading,
     receivedBookingsError,
     fetchReceivedBookings,
+    // Edit mode state and functions
+    isEditMode,
+    editProfile,
+    updateLoading,
+    showImageModal,
+    imageModalType,
+    setEditMode,
+    updateEditProfile,
+    updateProfile,
+    showImageUrlModal,
+    hideImageModal,
   } = useProfileStore();
   const [activeTab, setActiveTab] = useState("myVenues"); // Set initial venue manager status in localStorage on load
 
@@ -160,7 +179,28 @@ const ProfilePage: React.FC = () => {
       {/* Profile hero section with blue background */}
       <div className={styles.profileHero}>
         {/* Banner section - now inside the hero section */}
-        {profile.banner ? (
+        {isEditMode ? (
+          <div className={styles.editBanner}>
+            <div
+              className={
+                profile.banner ? styles.banner : styles.bannerPlaceholder
+              }
+              style={
+                profile.banner
+                  ? { backgroundImage: `url(${editProfile.banner})` }
+                  : {}
+              }
+            >
+              <button
+                className={styles.editOverlay}
+                onClick={() => showImageUrlModal("banner")}
+              >
+                <FaCamera />
+                <span>Change Banner</span>
+              </button>
+            </div>
+          </div>
+        ) : profile.banner ? (
           <div
             className={styles.banner}
             style={{ backgroundImage: `url(${profile.banner})` }}
@@ -174,15 +214,34 @@ const ProfilePage: React.FC = () => {
         {/* Profile header with avatar and details */}
         <div className="container">
           <div className={styles.header}>
-            <div className={styles.avatarContainer}>
-              <img
-                src={
-                  profile.avatar || "/images/profile-picture-placeholder.jpg"
-                }
-                alt="Profile avatar"
-                className={styles.avatar}
-              />
-            </div>
+            {isEditMode ? (
+              <div className={styles.editAvatarContainer}>
+                <img
+                  src={
+                    editProfile.avatar ||
+                    "/images/profile-picture-placeholder.jpg"
+                  }
+                  alt="Profile avatar"
+                  className={styles.avatar}
+                />
+                <button
+                  className={styles.editAvatarOverlay}
+                  onClick={() => showImageUrlModal("avatar")}
+                >
+                  <FaCamera />
+                </button>
+              </div>
+            ) : (
+              <div className={styles.avatarContainer}>
+                <img
+                  src={
+                    profile.avatar || "/images/profile-picture-placeholder.jpg"
+                  }
+                  alt="Profile avatar"
+                  className={styles.avatar}
+                />
+              </div>
+            )}
             <div className={styles.info}>
               <div className={styles.headerButtons}>
                 <button className={styles.logout} onClick={handleLogout}>
@@ -191,14 +250,36 @@ const ProfilePage: React.FC = () => {
               </div>
               <h2 className={styles.name}>{profile.name}</h2>
               <p className={styles.email}>{profile.email}</p>
-              {profile.bio && <p className={styles.bio}>{profile.bio}</p>}
+              {isEditMode ? (
+                <div className={styles.editBio}>
+                  <textarea
+                    value={editProfile.bio}
+                    onChange={(e) => updateEditProfile("bio", e.target.value)}
+                    placeholder="Tell us about yourself..."
+                    className={styles.bioInput}
+                    rows={3}
+                  />
+                </div>
+              ) : (
+                profile.bio && <p className={styles.bio}>{profile.bio}</p>
+              )}
               <div className={styles.actions}>
-                <Link
-                  to="/edit-profile"
-                  className={`${styles.actionBtn} ${styles.editBtn}`}
-                >
-                  <FaUserEdit /> Edit Profile
-                </Link>
+                {isEditMode ? (
+                  <button
+                    className={`${styles.actionBtn} ${styles.saveBtn}`}
+                    onClick={updateProfile}
+                    disabled={updateLoading}
+                  >
+                    <FaSave /> {updateLoading ? "Saving..." : "Save Changes"}
+                  </button>
+                ) : (
+                  <button
+                    className={`${styles.actionBtn} ${styles.editBtn}`}
+                    onClick={() => setEditMode(true)}
+                  >
+                    <FaUserEdit /> Edit Profile
+                  </button>
+                )}
                 <button
                   className={`${styles.actionBtn} ${styles.venueBtn} ${
                     isVenueManager ? styles.active : ""
@@ -272,6 +353,25 @@ const ProfilePage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Image URL Modal */}
+      <ImageUrlModal
+        isOpen={showImageModal}
+        type={imageModalType || "avatar"}
+        currentUrl={
+          imageModalType === "banner"
+            ? editProfile.banner || ""
+            : editProfile.avatar
+        }
+        onSave={(url) => {
+          if (imageModalType === "banner") {
+            updateEditProfile("banner", url);
+          } else {
+            updateEditProfile("avatar", url);
+          }
+        }}
+        onCancel={hideImageModal}
+      />
 
       {/* Tab content - rendered based on active tab - Now OUTSIDE the blue background */}
       <div className={styles.contentWrapper}>

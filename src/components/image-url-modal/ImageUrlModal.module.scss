@@ -1,0 +1,241 @@
+@use "sass:color";
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.modal {
+  background: white;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid vars.$light-gray;
+
+  h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: vars.$text-color;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .closeBtn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: vars.$dark-gray;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: vars.$light-gray;
+    }
+  }
+}
+
+.content {
+  padding: 1.5rem;
+}
+
+.inputGroup {
+  margin-bottom: 1.5rem;
+
+  label {
+    display: block;
+    font-weight: 500;
+    color: vars.$text-color;
+    margin-bottom: 0.5rem;
+  }
+
+  .urlInput {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid vars.$light-gray;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: vars.$primary-color;
+    }
+
+    &::placeholder {
+      color: vars.$dark-gray;
+    }
+  }
+}
+
+.preview {
+  label {
+    display: block;
+    font-weight: 500;
+    color: vars.$text-color;
+    margin-bottom: 0.75rem;
+  }
+
+  .loading {
+    padding: 2rem;
+    text-align: center;
+    color: vars.$dark-gray;
+    font-style: italic;
+  }
+
+  .previewImage {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 2px solid vars.$light-gray;
+    border-radius: 4px;
+
+    &.avatarPreview {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin: 0 auto;
+    }
+
+    &.bannerPreview {
+      width: 100%;
+      height: 120px;
+    }
+  }
+  .invalidImage {
+    padding: 2rem;
+    text-align: center;
+    color: vars.$danger-color;
+    background-color: rgba(vars.$danger-color, 0.1);
+    border: 2px dashed vars.$danger-color;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-top: 1px solid vars.$light-gray;
+
+  .removeBtn {
+    background-color: vars.$danger-color;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover:not(:disabled) {
+      background-color: color.adjust(vars.$danger-color, $lightness: -10%);
+    }
+
+    &:disabled {
+      background-color: vars.$dark-gray;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+
+  .primaryActions {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .cancelBtn {
+    background: none;
+    border: 2px solid vars.$light-gray;
+    color: vars.$text-color;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      border-color: vars.$dark-gray;
+      background-color: vars.$light-gray;
+    }
+  }
+  .saveBtn {
+    background-color: vars.$primary-color;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+
+    &:hover:not(:disabled) {
+      background-color: color.adjust(vars.$primary-color, $lightness: -10%);
+    }
+
+    &:disabled {
+      background-color: vars.$dark-gray;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 640px) {
+  .modal {
+    margin: 0.5rem;
+    max-width: none;
+  }
+
+  .header,
+  .content,
+  .actions {
+    padding: 1rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+
+    .primaryActions {
+      order: -1;
+      justify-content: space-between;
+    }
+
+    .removeBtn {
+      align-self: center;
+    }
+  }
+}
