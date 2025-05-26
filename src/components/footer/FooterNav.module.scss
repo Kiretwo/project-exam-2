@@ -70,3 +70,87 @@
     }
   }
 }
+
+// Desktop Footer Styles
+.desktop-footer {
+  display: none;
+  background: vars.$primary-color;
+  color: vars.$secondary-text-color;
+  margin-top: auto;
+
+  // Show on large screens only
+  @include mixins.respond-min(medium) {
+    display: block;
+  }
+
+  .footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 2rem 2rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 3rem;
+
+    @include mixins.respond(medium) {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      text-align: center;
+    }
+  }
+
+  .footer-section {
+    .footer-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: vars.$secondary-text-color;
+      margin-bottom: 1rem;
+    }
+
+    .footer-description {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 0;
+    }
+
+    .section-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: vars.$secondary-text-color;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-link {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
+
+      &:hover {
+        color: vars.$secondary-color;
+      }
+    }
+  }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.5rem 2rem;
+    text-align: center;
+
+    .copyright {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin: 0;
+    }
+  }
+}
