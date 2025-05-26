@@ -61,22 +61,22 @@ const ProfilePage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log("ProfilePage mounted, isVenueManager:", isVenueManager);
+/*     console.log("ProfilePage mounted, isVenueManager:", isVenueManager);
     console.log(
       "localStorage isVenueManager:",
       localStorage.getItem("isVenueManager")
-    );
+    ); */
     fetchProfile();
 
     // Add console logging for debugging
-    console.log(
+/*     console.log(
       "ProfilePage mounted, current isVenueManager state:",
       isVenueManager
     );
     console.log(
       "localStorage isVenueManager value:",
       localStorage.getItem("isVenueManager")
-    );
+    ); */
   }, [fetchProfile]);
 
   // Fetch received bookings when component mounts if user is a venue manager
@@ -90,14 +90,14 @@ const ProfilePage: React.FC = () => {
     const currentStatus = String(!!isVenueManager);
     const storedStatus = localStorage.getItem("isVenueManager");
 
-    console.log("ProfilePage: isVenueManager changed to", isVenueManager);
-    console.log("Current localStorage value:", storedStatus);
+/*     console.log("ProfilePage: isVenueManager changed to", isVenueManager);
+    console.log("Current localStorage value:", storedStatus); */
 
     if (currentStatus !== storedStatus) {
-      console.log(
+/*       console.log(
         "Updating localStorage with new isVenueManager:",
         currentStatus
-      );
+      ); */
       localStorage.setItem("isVenueManager", currentStatus);
 
       // Dispatch custom event

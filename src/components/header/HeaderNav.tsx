@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
 
     const handleVenueManagerChange = (event: any) => {
       const { isVenueManager: newStatus } = event.detail;
-      console.log("HeaderNav: Custom venue manager event received:", newStatus);
+/*       console.log("HeaderNav: Custom venue manager event received:", newStatus); */
       setIsVenueManager(newStatus);
     };
 

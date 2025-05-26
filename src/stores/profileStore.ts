@@ -104,8 +104,8 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
     }
     set({ loading: true, error: "" });
     try {
-      console.log("Fetching profile with username:", username);
-      console.log("Headers:", headers());
+/*       console.log("Fetching profile with username:", username);
+      console.log("Headers:", headers()); */
 
       const res = await fetch(API_PROFILE(username), {
         headers: headers(),
@@ -120,7 +120,7 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
       }
 
       const { data } = await res.json(); // Unpack 'data' property
-      console.log("Profile data received:", data);
+/*       console.log("Profile data received:", data); */
       set({
         profile: {
           id: data.id,
@@ -150,11 +150,11 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
 
     set({ receivedBookingsLoading: true, receivedBookingsError: "" });
     try {
-      console.log("Fetching venues with bookings for username:", username);
+/*       console.log("Fetching venues with bookings for username:", username); */
 
       const apiUrl = `${API_PROFILE_VENUES(username)}?_bookings=true`;
-      console.log("API URL:", apiUrl);
-      console.log("Headers:", headers());
+/*       console.log("API URL:", apiUrl);
+      console.log("Headers:", headers()); */
 
       // Fetch user's venues with bookings included
       const res = await fetch(apiUrl, {
@@ -170,7 +170,7 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
       }
 
       const { data } = await res.json();
-      console.log("Venues with bookings data received:", data);
+/*       console.log("Venues with bookings data received:", data); */
 
       // Transform the data to match our interface
       const venuesWithBookings: VenueWithBookings[] = data.map(
