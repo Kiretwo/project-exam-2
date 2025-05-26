@@ -217,7 +217,6 @@ const CreateVenuePage: React.FC = () => {
           {/* Basic Information */}
           <section className={styles.section}>
             <h2>Basic Information</h2>
-
             <div className={styles.field}>
               <label htmlFor="name">Venue Name *</label>
               <input
@@ -230,7 +229,6 @@ const CreateVenuePage: React.FC = () => {
                 placeholder="Enter venue name"
               />
             </div>
-
             <div className={styles.field}>
               <label htmlFor="description">Description *</label>
               <textarea
@@ -242,9 +240,8 @@ const CreateVenuePage: React.FC = () => {
                 rows={4}
                 placeholder="Describe your venue..."
               />
-            </div>
-
-            <div className={styles.fieldRow}>
+            </div>{" "}
+            <div className={styles["field-row"]}>
               {" "}
               <div className={styles.field}>
                 <label htmlFor="price">Price per night (NOK) *</label>
@@ -289,13 +286,11 @@ const CreateVenuePage: React.FC = () => {
               </div>
             </div>
           </section>
-
           {/* Images */}
           <section className={styles.section}>
-            <h2>Images</h2>
-
-            <div className={styles.imageUpload}>
-              <div className={styles.fieldRow}>
+            <h2>Images</h2>{" "}
+            <div className={styles["image-upload"]}>
+              <div className={styles["field-row"]}>
                 <div className={styles.field}>
                   <label htmlFor="imageUrl">Image URL</label>
                   <input
@@ -321,27 +316,26 @@ const CreateVenuePage: React.FC = () => {
                 <button
                   type="button"
                   onClick={addImage}
-                  className={styles.addImageBtn}
+                  className={styles["add-image-btn"]}
                   disabled={!imageUrl.trim()}
                 >
                   Add Image
                 </button>
               </div>
-            </div>
-
+            </div>{" "}
             {imagePreviews.length > 0 && (
-              <div className={styles.imagePreviews}>
+              <div className={styles["image-previews"]}>
                 <h3>Image Previews</h3>
-                <div className={styles.previewGrid}>
+                <div className={styles["preview-grid"]}>
                   {imagePreviews.map((image) => (
-                    <div key={image.id} className={styles.previewItem}>
+                    <div key={image.id} className={styles["preview-item"]}>
                       <img src={image.url} alt={image.alt} />
-                      <div className={styles.previewInfo}>
+                      <div className={styles["preview-info"]}>
                         <p>{image.alt}</p>
                         <button
                           type="button"
                           onClick={() => removeImage(image.id)}
-                          className={styles.removeBtn}
+                          className={styles["remove-btn"]}
                         >
                           Remove
                         </button>
@@ -352,12 +346,10 @@ const CreateVenuePage: React.FC = () => {
               </div>
             )}
           </section>
-
           {/* Amenities */}
           <section className={styles.section}>
-            <h2>Amenities</h2>
-
-            <div className={styles.checkboxGrid}>
+            <h2>Amenities</h2>{" "}
+            <div className={styles["checkbox-grid"]}>
               <div className={styles.checkbox}>
                 <input
                   type="checkbox"
@@ -403,12 +395,10 @@ const CreateVenuePage: React.FC = () => {
               </div>
             </div>
           </section>
-
           {/* Location */}
           <section className={styles.section}>
-            <h2>Location</h2>
-
-            <div className={styles.fieldRow}>
+            <h2>Location</h2>{" "}
+            <div className={styles["field-row"]}>
               <div className={styles.field}>
                 <label htmlFor="address">Address</label>
                 <input
@@ -444,9 +434,8 @@ const CreateVenuePage: React.FC = () => {
                   placeholder="ZIP code"
                 />
               </div>
-            </div>
-
-            <div className={styles.fieldRow}>
+            </div>{" "}
+            <div className={styles["field-row"]}>
               <div className={styles.field}>
                 <label htmlFor="country">Country</label>
                 <input
@@ -470,9 +459,8 @@ const CreateVenuePage: React.FC = () => {
                   placeholder="Continent"
                 />
               </div>
-            </div>
-
-            <div className={styles.fieldRow}>
+            </div>{" "}
+            <div className={styles["field-row"]}>
               {" "}
               <div className={styles.field}>
                 <label htmlFor="lat">Latitude</label>
@@ -499,14 +487,13 @@ const CreateVenuePage: React.FC = () => {
                 />
               </div>
             </div>
-          </section>
-
+          </section>{" "}
           {/* Submit */}
-          <div className={styles.submitSection}>
+          <div className={styles["submit-section"]}>
             <button
               type="submit"
               disabled={loading}
-              className={styles.submitBtn}
+              className={styles["submit-btn"]}
             >
               {loading ? "Creating Venue..." : "Create Venue"}
             </button>
