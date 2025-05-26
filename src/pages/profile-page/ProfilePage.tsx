@@ -42,7 +42,7 @@ const ProfilePage: React.FC = () => {
     showImageUrlModal,
     hideImageModal,
   } = useProfileStore();
-  const [activeTab, setActiveTab] = useState("myVenues"); // Set initial venue manager status in localStorage on load
+  const [activeTab, setActiveTab] = useState("manageVenues"); // Set initial venue manager status in localStorage on load
 
   // Set Manage Venues tab active if redirected after deletion
   useEffect(() => {
@@ -309,22 +309,16 @@ const ProfilePage: React.FC = () => {
         {/* Navigation tabs - simple text links with underline when active */}{" "}
         <div className={styles.navTabs}>
           <div className={styles.tabsContainer}>
-            <div
-              className={`${styles.tab} ${
-                activeTab === "myVenues" ? styles.active : ""
-              }`}
-              onClick={() => setActiveTab("myVenues")}
-            >
-              My Venues
-            </div>
-            <div
-              className={`${styles.tab} ${
-                activeTab === "nextTrip" ? styles.active : ""
-              }`}
-              onClick={() => setActiveTab("nextTrip")}
-            >
-              Next Trip
-            </div>
+            {isVenueManager && (
+              <div
+                className={`${styles.tab} ${
+                  activeTab === "manageVenues" ? styles.active : ""
+                }`}
+                onClick={() => setActiveTab("manageVenues")}
+              >
+                Manage Venues
+              </div>
+            )}
             {isVenueManager && (
               <div
                 className={`${styles.tab} ${
@@ -339,16 +333,6 @@ const ProfilePage: React.FC = () => {
                 }}
               >
                 Received Bookings
-              </div>
-            )}
-            {isVenueManager && (
-              <div
-                className={`${styles.tab} ${
-                  activeTab === "manageVenues" ? styles.active : ""
-                }`}
-                onClick={() => setActiveTab("manageVenues")}
-              >
-                Manage Venues
               </div>
             )}
           </div>
@@ -378,11 +362,17 @@ const ProfilePage: React.FC = () => {
       <div className={styles.contentWrapper}>
         <div className="container">
           <div className={styles.contentSection}>
-            {activeTab === "myVenues" && (
-              <div className={styles.venuesList}>My Venues Content</div>
+            {!isVenueManager && (
+              <div className={styles.emptyState}>
+                <h3>Welcome to Your Profile</h3>
+                <p>
+                  Become a venue manager to access advanced features like
+                  managing venues and viewing received bookings.
+                </p>
+              </div>
             )}
-            {activeTab === "nextTrip" && (
-              <div className={styles.tripContent}>Next Trip Content</div>
+            {activeTab === "manageVenues" && isVenueManager && (
+              <ManageVenuesContent />
             )}
             {activeTab === "receivedBookings" && isVenueManager && (
               <ReceivedBookings
@@ -391,15 +381,6 @@ const ProfilePage: React.FC = () => {
                 error={receivedBookingsError}
               />
             )}
-            {activeTab === "receivedBookings" && !isVenueManager && (
-              <div className={styles.contentSection}>
-                <div className={styles.emptyState}>
-                  <h3>Venue Manager Required</h3>
-                  <p>You need to become a venue manager to receive bookings.</p>
-                </div>
-              </div>
-            )}
-            {activeTab === "manageVenues" && <ManageVenuesContent />}
           </div>
         </div>
       </div>

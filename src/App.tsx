@@ -1,7 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import "./App.scss";
 // Import page components
-import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ProfilePage from "./pages/profile-page/ProfilePage";
@@ -19,11 +18,12 @@ function App() {
       {/* Wrap all page routes within the Layout component */}
       <Route path="/" element={<Layout />}>
         {/* Child routes rendered by Outlet in Layout */}
-        <Route index element={<HomePage />} /> {/* index route for "/" */}
+        <Route index element={<SearchPage />} />{" "}
+        {/* SearchPage is now the home page */}
         <Route path="login" element={<LoginPage />} />
-        <Route path="register" element={<RegisterPage />} />{" "}
+        <Route path="register" element={<RegisterPage />} />
         <Route path="search" element={<SearchPage />} />
-        <Route path="bookings" element={<BookingPage />} />{" "}
+        <Route path="bookings" element={<BookingPage />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="create-venue" element={<CreateVenuePage />} />
         <Route path="edit-venue/:id" element={<EditVenuePage />} />

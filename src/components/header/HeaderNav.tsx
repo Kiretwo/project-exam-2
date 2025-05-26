@@ -71,10 +71,7 @@ const Navbar: React.FC = () => {
         )}{" "}
         <ul className={styles["navbar-links"]}>
           <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/search">Search</Link>
+            <Link to="/">Search</Link>
           </li>
           {isLoggedIn ? (
             <>

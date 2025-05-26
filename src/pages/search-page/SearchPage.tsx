@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BookingForm, {
   BookingParams,
 } from "../../components/bookings/BookingForm";
@@ -10,10 +10,48 @@ const SearchPage: React.FC = () => {
   const [venues, setVenues] = useState<Venue[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
+
+  // Load initial venues when component mounts
+  useEffect(() => {
+    loadInitialVenues();
+  }, []);
+
+  const loadInitialVenues = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const baseUrl = import.meta.env.VITE_NOROFF_API_BASE_URL;
+      const apiKey = import.meta.env.VITE_API_KEY;
+
+      const res = await fetch(
+        `${baseUrl}/holidaze/venues?limit=20&page=1&sort=created&sortOrder=desc`,
+        {
+          headers: {
+            "X-Noroff-API-Key": apiKey,
+          },
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error(`Server error ${res.status}`);
+      }
+
+      const json = (await res.json()) as { data: Venue[] };
+      setVenues(json.data);
+    } catch (e: any) {
+      console.error("Fetch initial venues failed:", e);
+      setError(e.message || "Failed to load venues");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const onSearch = async ({ location }: BookingParams) => {
     setLoading(true);
     setError(null);
+    setHasSearched(true);
 
     try {
       const baseUrl = import.meta.env.VITE_NOROFF_API_BASE_URL;
