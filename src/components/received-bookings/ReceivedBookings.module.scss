@@ -53,7 +53,6 @@
   .bookingCard {
     display: flex;
     background-color: vars.$background-color;
-    border: 1px solid lighten(vars.$dark-gray, 40%);
     border-radius: 8px;
     overflow: hidden;
     transition: all 0.2s ease;
@@ -197,7 +196,7 @@
     }
 
     .guestCount {
-      color: vars.$secondary-color;
+      color: vars.$dark-gray;
       font-weight: 500;
       font-size: 0.875rem;
     }

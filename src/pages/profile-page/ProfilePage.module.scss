@@ -234,6 +234,9 @@
 
   .avatarContainer {
     margin-right: 1.5rem;
+    @include mixins.respond(small) {
+      margin-right: 0.5rem;
+    }
   }
 
   .avatar {
@@ -272,25 +275,27 @@
     }
 
     .bio {
-      margin: 0.4rem 0 0;
+      margin: 0.6rem 0 0;
       color: vars.$secondary-text-color;
       font-size: 0.9rem;
     }
 
     .logout {
-      background-color: rgba(255, 255, 255, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 4px;
-      padding: 0.25rem 0.5rem;
-      font-size: 0.75rem;
-      color: white;
+      font-family: vars.$font-primary;
+      font-weight: 700;
+      background-color: white;
+      border: none;
+      border-radius: 17px;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+      color: vars.$danger-color;
       display: flex;
       align-items: center;
       gap: 0.25rem;
       cursor: pointer;
 
       &:hover {
-        background-color: rgba(255, 255, 255, 0.3);
+        background-color: darken(white, 10%);
       }
     }
 
@@ -358,6 +363,8 @@
 
       // Show 'Remove?' text only on hover
       &:hover {
+        background-color: vars.$danger-color;
+
         .defaultText {
           display: none;
         }
@@ -469,6 +476,9 @@
   .editAvatarContainer {
     position: relative;
     margin-right: 1.5rem;
+    @include mixins.respond(small) {
+      margin-right: 0.5rem;
+    }
 
     .editAvatarOverlay {
       position: absolute;
