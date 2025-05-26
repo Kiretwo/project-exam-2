@@ -31,14 +31,9 @@ interface VenueData {
 interface VenueManageCardProps {
   venue: VenueData;
   onEdit: (venueId: string) => void;
-  onDelete: (venueId: string) => void;
 }
 
-const VenueManageCard: React.FC<VenueManageCardProps> = ({
-  venue,
-  onEdit,
-  onDelete,
-}) => {
+const VenueManageCard: React.FC<VenueManageCardProps> = ({ venue, onEdit }) => {
   const hasImage = venue.media && venue.media.length > 0;
   const locationString = `${venue.location.city}${
     venue.location.country ? `, ${venue.location.country}` : ""
@@ -61,6 +56,16 @@ const VenueManageCard: React.FC<VenueManageCardProps> = ({
 
         {/* Content on right */}
         <div className={styles.details}>
+          {/* Edit button as a full-width block at the top of details */}
+          <div className={styles["edit-btn-row"]}>
+            <button
+              className={styles["edit-btn"]}
+              onClick={() => onEdit(venue.id)}
+              title="Edit venue"
+            >
+              Edit Venue
+            </button>
+          </div>
           <div className={styles["details-content"]}>
             <h3 className={styles.name}>{venue.name}</h3>
             <p className={styles.location}>{locationString}</p>
@@ -70,24 +75,6 @@ const VenueManageCard: React.FC<VenueManageCardProps> = ({
           {/* Price in bottom right */}
           <div className={styles.price}>{venue.price} NOK/night</div>
         </div>
-      </div>
-
-      {/* Action buttons at bottom */}
-      <div className={styles["action-buttons"]}>
-        <button
-          className={styles["edit-btn"]}
-          onClick={() => onEdit(venue.id)}
-          title="Edit venue"
-        >
-          Edit Venue
-        </button>
-        <button
-          className={styles["delete-btn"]}
-          onClick={() => onDelete(venue.id)}
-          title="Delete venue"
-        >
-          Delete Venue
-        </button>
       </div>
     </div>
   );

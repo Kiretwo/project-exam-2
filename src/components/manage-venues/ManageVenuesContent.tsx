@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import styles from "./ManageVenuesContent.module.scss";
 import VenueManageCard from "../venue-manage-card/VenueManageCard";
-import { API_PROFILE_VENUES, API_VENUE } from "../../api/constants";
+import { API_PROFILE_VENUES } from "../../api/constants";
 import { headers } from "../../api/headers";
 
 interface Media {
@@ -90,38 +90,6 @@ const ManageVenuesContent: React.FC<ManageVenuesContentProps> = ({
     }
   };
 
-  const handleDeleteVenue = async (venueId: string) => {
-    if (!window.confirm("Are you sure you want to delete this venue?")) {
-      return;
-    }
-
-    try {
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        setError("Authentication required");
-        return;
-      }
-
-      // Optimistically remove venue from UI
-      setVenues((prev) => prev.filter((venue) => venue.id !== venueId));
-      const response = await fetch(API_VENUE(venueId), {
-        method: "DELETE",
-        headers: headers(),
-      });
-
-      if (!response.ok) {
-        // Restore venue if deletion failed
-        await fetchVenues();
-        throw new Error(`Failed to delete venue: ${response.statusText}`);
-      }
-    } catch (err) {
-      console.error("Error deleting venue:", err);
-      setError(err instanceof Error ? err.message : "Failed to delete venue");
-      // Refresh venues to ensure UI is in sync
-      await fetchVenues();
-    }
-  };
-
   const handleEditVenue = (venueId: string) => {
     navigate(`/edit-venue/${venueId}`);
   };
@@ -184,14 +152,12 @@ const ManageVenuesContent: React.FC<ManageVenuesContentProps> = ({
             <div className={styles["venue-count"]}>
               {venues.length} venue{venues.length !== 1 ? "s" : ""}
             </div>
-          </div>
-
+          </div>{" "}
           <div className={styles["venues-grid"]}>
             {sortedVenues.map((venue) => (
               <VenueManageCard
                 key={venue.id}
                 venue={venue}
-                onDelete={handleDeleteVenue}
                 onEdit={handleEditVenue}
               />
             ))}

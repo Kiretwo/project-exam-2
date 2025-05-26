@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FaUserEdit, FaSignOutAlt, FaHotel, FaTimes } from "react-icons/fa";
 import styles from "./ProfilePage.module.scss";
 import { useProfileStore } from "../../stores/profileStore";
 import ManageVenuesContent from "../../components/manage-venues/ManageVenuesContent";
 
 const ProfilePage: React.FC = () => {
+  const location = useLocation();
   const {
     profile,
     isVenueManager,
@@ -17,6 +18,13 @@ const ProfilePage: React.FC = () => {
     clearMessage,
   } = useProfileStore();
   const [activeTab, setActiveTab] = useState("myVenues"); // Set initial venue manager status in localStorage on load
+
+  // Set Manage Venues tab active if redirected after deletion
+  useEffect(() => {
+    if (location.state && location.state.showManageVenues) {
+      setActiveTab("manageVenues");
+    }
+  }, [location.state]);
 
   useEffect(() => {
     // Check if we should navigate to a specific tab

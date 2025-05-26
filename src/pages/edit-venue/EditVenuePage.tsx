@@ -274,6 +274,36 @@ const EditVenuePage: React.FC = () => {
     }
   };
 
+  const handleDeleteVenue = async () => {
+    if (!id) return;
+    if (
+      !window.confirm(
+        "Are you sure you want to delete this venue? This action cannot be undone."
+      )
+    )
+      return;
+    setLoading(true);
+    setError(null);
+    setSuccess(null);
+    try {
+      const response = await fetch(API_VENUE(id), {
+        method: "DELETE",
+        headers: headers(),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to delete venue");
+      }
+      setSuccess("Venue deleted successfully!");
+      setTimeout(() => {
+        navigate("/profile", { state: { showManageVenues: true } });
+      }, 2000);
+    } catch (err: any) {
+      setError(err.message || "Failed to delete venue");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (fetchLoading) {
     return (
       <div className="container">
@@ -298,13 +328,23 @@ const EditVenuePage: React.FC = () => {
       <div className={styles["create-venue-page"]}>
         <div className={styles.header}>
           <h1>Edit Venue</h1>
-          <button
-            type="button"
-            onClick={() => navigate("/manage-venues")}
-            className={styles["back-btn"]}
-          >
-            Back to Manage Venues
-          </button>
+          <div className={styles["header-actions"]}>
+            <button
+              type="button"
+              onClick={() => navigate("/profile", { state: { showManageVenues: true } })}
+              className={styles["back-btn"]}
+            >
+              Back to Manage Venues
+            </button>
+            <button
+              type="button"
+              className={styles["delete-btn"]}
+              onClick={handleDeleteVenue}
+              disabled={loading}
+            >
+              Delete Venue
+            </button>
+          </div>
         </div>
 
         {error && <div className={styles.error}>{error}</div>}
