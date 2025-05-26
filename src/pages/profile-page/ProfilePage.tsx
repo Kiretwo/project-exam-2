@@ -7,6 +7,7 @@ import {
   FaTimes,
   FaSave,
   FaCamera,
+  FaUserCheck,
 } from "react-icons/fa";
 import styles from "./ProfilePage.module.scss";
 import { useProfileStore } from "../../stores/profileStore";
@@ -289,7 +290,7 @@ const ProfilePage: React.FC = () => {
                   {isVenueManager ? (
                     <>
                       <span className={styles.defaultText}>
-                        <FaHotel /> Venue Manager
+                        <FaUserCheck /> Venue Manager
                       </span>
                       <span className={styles.hoverText}>
                         <FaTimes /> Remove?

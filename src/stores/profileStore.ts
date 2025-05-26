@@ -349,9 +349,7 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
       }
 
       const { data } = await res.json();
-      console.log("Profile updated successfully:", data);
-
-      // Update the profile state with the new data
+      console.log("Profile updated successfully:", data); // Update the profile state with the new data
       set({
         profile: {
           id: data.id,
@@ -367,6 +365,12 @@ export const useProfileStore = create<ProfileState>((set, get) => ({
         successMessage: "Profile updated successfully!",
         updateLoading: false,
       });
+
+      // Clear the success message after 3 seconds
+      setTimeout(() => {
+        const { clearMessage } = get();
+        clearMessage();
+      }, 3000);
     } catch (err: any) {
       console.error("Profile update error:", err);
       set({
