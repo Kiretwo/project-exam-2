@@ -79,14 +79,14 @@ const VenueManageCard: React.FC<VenueManageCardProps> = ({
           onClick={() => onEdit(venue.id)}
           title="Edit venue"
         >
-          ✏️ Edit Venue
+          Edit Venue
         </button>
         <button
           className={styles["delete-btn"]}
           onClick={() => onDelete(venue.id)}
           title="Delete venue"
         >
-          🗑️ Delete Venue
+          Delete Venue
         </button>
       </div>
     </div>
