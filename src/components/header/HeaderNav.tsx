@@ -68,15 +68,23 @@ const Navbar: React.FC = () => {
               <FaPlus /> Create venue
             </Link>
           </div>
-        )}
+        )}{" "}
         <ul className={styles["navbar-links"]}>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
           <li>
             <Link to="/search">Search</Link>
           </li>
           {isLoggedIn ? (
-            <li>
-              <Link to="/profile">Profile</Link>
-            </li>
+            <>
+              <li>
+                <Link to="/bookings">Bookings</Link>
+              </li>
+              <li>
+                <Link to="/profile">Profile</Link>
+              </li>
+            </>
           ) : (
             <>
               <li>
