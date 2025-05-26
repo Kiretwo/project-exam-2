@@ -16,6 +16,8 @@ export default defineConfig({
           @use "@/styles/utils/variables.scss" as vars;
           @use "@/styles/utils/mixins.scss" as mixins;
         `,
+        quietDeps: true,
+        silenceDeprecations: ["color-functions", "global-builtin"],
       },
     },
   },
